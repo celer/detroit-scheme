@@ -1,0 +1,16 @@
+[Building]
+
+- prerequisites:
+  
+  - Ant
+  - Java 1.6
+
+- building:
+
+  on most systems simply do: ./detroit
+  or type: ant
+
+- cleaning:
+ 
+  to remove cruft: ant clean
+ 

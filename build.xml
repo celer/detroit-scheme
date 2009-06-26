@@ -1,0 +1,36 @@
+<project name="detroit" default="dist" basedir=".">
+    <description> build file for detroit scheme </description>
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init" description="compile the source" >
+    <javac srcdir="${src}" destdir="${build}" debug="true"/>
+  </target>
+
+  <target name="dist" depends="compile" description="generate the distribution" >
+    <copy todir="${build}/detroit">
+      <fileset dir="${src}" excludes="**/*.java"/>
+    </copy>
+    <jar jarfile="detroit.jar" basedir="${build}" level="9"> 
+      <manifest>
+	<attribute name="Main-Class" value="detroit.Main" />
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="test" depends="clean, dist" description="run functional tests">
+    <exec executable="./detroit">
+	<arg value="test/test.scm"/>
+    </exec>
+  </target>
+
+  <target name="clean" description="clean up" >
+    <delete dir="${build}"/>
+    <delete file="detroit.jar"/>
+  </target>
+</project>
