@@ -9,12 +9,7 @@ import java.io.*;
 public class Main
 {
 
-	private static String banner =
-"  [0;1;34;94m▌[0m   [0;1;34;94m▐[0m        [0;1;34;94m▗[0;34m▐[0m\n"+ 
-"[0;1;34;94m▞▀▌▞▀▖▜▀[0m [0;34m▙▀▖▞▀▖▄▜▀[0m\n"+
-"[0;34m▌[0m [0;34m▌▛▀[0m [0;34m▐[0m [0;34m▖▌[0m  [0;34m▌[0m [0;34m▌▐[0;37m▐[0m [0;37m▖[0m\n"+
-"[0;34m▝▀▘▝▀▘[0m [0;34m▀[0m [0;37m▘[0m  [0;37m▝▀[0m [0;37m▀▘▀[0m";
-
+	private static String banner = "Detroit Scheme";
 	private static String version = "v1.1";
 	private static String author = "Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.";
 
