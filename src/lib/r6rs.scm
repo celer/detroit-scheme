@@ -283,6 +283,8 @@
 	  (string-blit! (car parts) 0 res index len)
 	  (loop (cdr parts) (+ index len)))))))
 
+(define conc string-append)
+
 (define (list->string chars)
   (let ((res (make-string (length chars))))
     (let loop ((idx 0)
@@ -673,6 +675,7 @@
 	   string-ci<? string-ci>? string-ci<=? string-ci>=?
 	   substring
 	   string-append
+	   conc
 	   string->list
 	   list->string
 	   string-copy
