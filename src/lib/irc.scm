@@ -4,20 +4,27 @@
 
 (use 'net)
 
+; global irc connection io
 (define irc:con #f)
+
+; format: '(nick username hostname servername realname)
 (define irc:user #f)
 
 ; make a connection to the irc server
 (define (irc:connect server port . password)
-  (let ((io (net:client server port)))
-    (if password (net:print io (conc "PASS " password)))
-    (set! irc:con io)))
+  (set! irc:con (net:client server port))
+  (unless (null? password) (net:print con (conc "PASS " password)))
+  irc:con)
 
 ; store user information and send it to the irc server
 (define (irc:set-user! nick username hostname servername realname)
   (set! irc:user (list nick username hostname servername realname))
   (net:print irc:con (conc "NICK " nick))
-  (net:print irc:con (conc "USER " username hostname servername ":" realname)))
+  (net:print irc:con (conc "USER " username " " hostname " " servername " :" realname)))
+
+; get the current nick
+(define (irc:get-nick)
+  (car irc:user))
 
 ; write a raw line to the irc server
 (define (irc:raw:write line)
@@ -36,14 +43,18 @@
 (define (irc:join channel)
   (irc:raw:write (conc "JOIN " channel)))
 
-; handle irc event messages
-(define (irc:events handler)
-	; we loop here
-	; each line is passed to handler
-) 
+; send a message to a recipient 
+(define (irc:say recipient message)
+  (irc:raw:write (conc "PRIVMSG " recipient " :" message)))
 
-; default event handler
-(define (irc:handle-events line)
-	; this will be a simple evaluator for handling standard IRC messages
-)
+; handle irc event messages
+;(define (irc:events handler)
+;	; we loop here
+;	; each line is passed to handler
+;) 
+;
+;; default event handler
+;(define (irc:handle-events line)
+;	; this will be a simple evaluator for handling standard IRC messages
+;)
 
