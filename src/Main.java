@@ -25,7 +25,7 @@ public class Main
 			if (args.length == 0)
 			{
 				System.out.println(banner + " " + version + "\n" + author);
-				vm.eval(new Pair("repl", new Pair(true, null)), vm.r6rs);
+				vm.eval(new Pair("repl", new Pair(true, null)), vm.r5rs);
 				return;
 			}
 
@@ -33,7 +33,7 @@ public class Main
 			{
 				if (args[0].equals("-"))
 				{
-					vm.eval(new Pair("repl", new Pair(false, null)), vm.r6rs);
+					vm.eval(new Pair("repl", new Pair(false, null)), vm.r5rs);
 					return;
 				}
 			}
@@ -57,11 +57,11 @@ public class Main
 				if (args[i].equals("-e"))
 				{
 					vm.load(new java.io.StringReader(args[++i]),
-							(Library)vm.eval(new Pair("current-library", null), vm.r6rs));
+							(Library)vm.eval(new Pair("current-library", null), vm.r5rs));
 				}
 				else if (args[i].equals("--"))
 					break;
-				else vm.load(new java.io.FileReader(args[i]), vm.r6rs);
+				else vm.load(new java.io.FileReader(args[i]), vm.r5rs);
 			}
 		}
 		catch (Exception e)

@@ -26,7 +26,7 @@ public class Interpreter
     private static Boolean FALSE = Boolean.FALSE;
 
     public Pair libs = null;
-    public Library r6rs = new Library();
+    public Library r5rs = new Library();
 
     public static final Pair startList()
     {
@@ -775,7 +775,7 @@ public class Interpreter
                     nextProc = ((Procedure)(argList.next()));
                     String name = (String)argList.next();
                     Procedure expander = ((Procedure)(argList.next()));
-                    r6rs.macros.put(name, expander);
+                    r5rs.macros.put(name, expander);
                     argList.setNext(unspecified);
                     continue;
                 }
@@ -942,17 +942,17 @@ public class Interpreter
 
             Procedure proc = new Procedure(BUILTIN, i, -1, null, s, null);
 
-            r6rs.symbolTable.put(s, cons(r6rs.slots, new Integer(r6rs.slots.size())));
-            r6rs.slots.addElement((Object)proc);
+            r5rs.symbolTable.put(s, cons(r5rs.slots, new Integer(r5rs.slots.size())));
+            r5rs.slots.addElement((Object)proc);
 
             if (i == 0)
                 identity = proc;
         }
 
-        libs = cons(cons(cons("r6rs", null), r6rs), libs);
+        libs = cons(cons(cons("r5rs", null), r5rs), libs);
 
-        loadFromJar("detroit/lib/r6rs.scm", r6rs);
-        loadFromJar("detroit/lib/init.scm", r6rs);
+        loadFromJar("detroit/lib/r5rs.scm", r5rs);
+        loadFromJar("detroit/lib/init.scm", r5rs);
     }
 
     public Object apply(Object proc, Pair args) throws Exception

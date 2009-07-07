@@ -522,7 +522,7 @@
     (get-lib (interpreter) name)
     name))
 
-(define current-library (make-parameter 'r6rs lookup-library))
+(define current-library (make-parameter 'r5rs lookup-library))
 (define interaction-environment current-library)
 
 (define lib-macros (field "detroit.Library" "macros"))
@@ -604,7 +604,7 @@
 	       #f)))
 
 
-(library r6rs
+(library r5rs
 	 (export
 	   set! if
 	   define-macro
@@ -1406,13 +1406,13 @@
 	   error
 	   argv)
 
-	 (import r6rs)
+	 (import r5rs)
 
 
 	 (define-macro (imp . names)
 		       `(begin
 			  . ,(map (lambda (name)
-				    `(define ,name (eval ',name 'r6rs)))
+				    `(define ,name (eval ',name 'r5rs)))
 				  names)))
 
 	 (imp class
@@ -1458,14 +1458,14 @@
 	   native-hash-table-keys native-hash-table-values
 	   native-hash-table-map native-hash-table-for-each)
 
-	 (import r6rs
+	 (import r5rs
 		 detroit)
 
 
 	 (define-macro (imp . names)
 		       `(begin
 			  . ,(map (lambda (name)
-				    `(define ,name (eval ',name 'r6rs)))
+				    `(define ,name (eval ',name 'r5rs)))
 				  names)))
 
 	 (imp
@@ -1476,7 +1476,7 @@
 	   native-hash-table-map native-hash-table-for-each))
 
 
-(library (r6rs arithmetic fixnum)
+(library (r5rs arithmetic fixnum)
 	 (export
 
 	   fixnum-not
@@ -1491,10 +1491,10 @@
 
 	   )
 
-	 (import r6rs)
+	 (import r5rs)
 
 
-	 (define bitwise (eval 'bitwise 'r6rs))
+	 (define bitwise (eval 'bitwise 'r5rs))
 
 	 (define (fixnum-not fx)
 	   (bitwise #\~ fx))
@@ -1517,13 +1517,13 @@
 	 )
 
 
-(library (r6rs i/o ports)
+(library (r5rs i/o ports)
 	 (export
 
 	   open-string-input-port
 	   )
 
-	 (import r6rs detroit)
+	 (import r5rs detroit)
 
 	 (define new-buffered-reader (constructor "java.io.BufferedReader"
 						  "java.io.Reader"))
