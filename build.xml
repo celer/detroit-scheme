@@ -23,14 +23,15 @@
     </jar>
   </target>
 
-  <target name="test" depends="clean, dist" description="run functional tests">
-    <exec executable="./detroit">
-	<arg value="test/test.scm"/>
-    </exec>
+  <target name="packs" description="generate packages">
+    <jar jarfile="extras.jar" basedir="packs/extras" level="9" />
   </target>
+
+  <target name="all" depends="dist, packs" description="build everything" />
 
   <target name="clean" description="clean up" >
     <delete dir="${build}"/>
     <delete file="detroit.jar"/>
+    <delete file="extras.jar"/>
   </target>
 </project>

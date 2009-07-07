@@ -1593,7 +1593,12 @@
 
 ; require
 (define (require lib)
-  (load (make-require-path (symbol->string lib))) #t)
+  (try-catch-finally
+    (lambda ()
+      (load (make-require-path (symbol->string lib))) #t)
+    (lambda ()
+      (load (string-append (symbol->string lib) ".scm")) #t)
+    #f))
 
 ; alias for require
 (define use require)
@@ -1601,3 +1606,8 @@
 ; load an srfi by number
 (define (srfi num)
   (load (make-require-path (number->string num))) #t)
+
+; load a package by name
+(define (include name)
+  (load-jar (string-append (symbol->string name) ".jar")) #t)
+

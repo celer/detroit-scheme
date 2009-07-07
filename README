@@ -9,6 +9,8 @@
 
   on most systems simply do: ./detroit
   or type: ant
+  to build packages: ant packs
+  to build everything: ant all
 
 - cleaning:
  

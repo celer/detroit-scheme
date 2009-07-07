@@ -1,6 +1,7 @@
 ; tests for standard library
 (use 'test)
 
+(include 'extras)
 (use 'fold)
 (use 'amk)
 (use 'combine)
