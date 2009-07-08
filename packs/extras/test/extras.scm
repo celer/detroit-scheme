@@ -67,7 +67,8 @@
 (check (union '(v w x) '(w x y) '(x y z)) => '(v w x y z))
 (check (write-to-string '(a 1 #\c #(v) #t "str" "\"s\"" (a . d))) => "(a 1 #\\c #(v) #t \"str\" \"\\\"s\\\"\" (a . d))")
 (check (display-to-string '(a 1 #\c #(v) #t "str" "\"s\"" (a . d))) => "(a 1 c #(v) #t str \"s\" (a . d))")
-(check (with-input-from-file "test/extras.scm" read-line) => "; tests for extras library")
+; this doesn't work inside the jar
+;(check (with-input-from-file "test/extras.scm" read-line) => "; tests for extras library")
 
 ; produce a report
 (check-report)

@@ -1611,3 +1611,6 @@
 (define (include name)
   (load-jar (string-append (symbol->string name) ".jar")) #t)
 
+; run a test
+(define (test name)
+  (require (string->symbol (conc "test/" (symbol->string name)))))
