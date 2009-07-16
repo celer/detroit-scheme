@@ -3,11 +3,16 @@
 (use 'test)
 (use 'irc)
 
-(define test:channel "#detroit-scheme")
+; default testing channel
+(define test:channel "#detroit-scheme-test")
 
+; number of events captured successfully
+(define test:results 0)
+
+; count the number of notices and mode changes, should be equal to 6
 (define (irc:events:filter event)
-  ; XXX: replace this with a check of some kind for the report"
-  ; XXX: test ping-pong here
+  (if (pair? (pregexp-match "NOTICE AUTH :" event))
+    (set! test:results (+ test:results 1)))
   event)
 
 ; test a simple irc connection
@@ -18,6 +23,7 @@
   (irc:join test:channel) 
   (irc:say test:channel "test")
   (sleep 5)
+  (check test:results => 4)
   (irc:quit "bye"))
 
 ; test the irc library and produce a report
