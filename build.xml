@@ -25,6 +25,7 @@
 
   <target name="packs" description="generate packages">
     <jar jarfile="extras.jar" basedir="packs/extras" level="9" />
+    <jar jarfile="irc.jar" basedir="packs/irc" level="9" />
   </target>
 
   <target name="all" depends="dist, packs" description="build everything" />
@@ -33,5 +34,7 @@
     <delete dir="${build}"/>
     <delete file="detroit.jar"/>
     <delete file="extras.jar"/>
+    <delete file="irc.jar"/>
+    <delete file="irc.log"/>
   </target>
 </project>
