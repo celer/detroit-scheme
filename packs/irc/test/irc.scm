@@ -6,7 +6,8 @@
 (define test:channel "#detroit-scheme")
 
 (define (irc:events:filter event)
-  (display "XXX: replace this with a check of some kind for the report") (newline)
+  ; XXX: replace this with a check of some kind for the report"
+  ; XXX: test ping-pong here
   event)
 
 ; test a simple irc connection

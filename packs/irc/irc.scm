@@ -3,6 +3,7 @@
 ;; IRC Client Library 
 
 (use 'net)
+(use 'pregexp)
 
 ; global irc connection io
 (define irc:con #f)
@@ -12,6 +13,9 @@
 
 ; the last event recieved
 (define irc:events:last #f)
+
+; toggle ping/pong
+(define irc:ping-pong-flag #t) 
 
 ; thread id of the event handler
 (define irc:events:tid #f)
@@ -30,10 +34,14 @@
       (lambda ()
 	(display event)
 	(newline))
-      #t))) ; XXX: this is not behaving as #f when called without optional arguments 
+      #t)))
+
+; handle PONG from remote server send a PING response
+(define (irc:ping-pong event)
+  (if (and irc:ping-pong-flag (pregexp-match "PING :" event))
+    (irc:raw:write (conc "PONG :" (cadr (pregexp-split ":" event))))))
 
 ; handle irc events
-; XXX: implement ping/pong here
 (define (irc:events:handler)
   (letrec ((reader
 	     (lambda ()
@@ -42,6 +50,7 @@
 		   (begin
 		     (set! irc:events:last r)
 		     (irc:events:log r)
+		     (irc:ping-pong r)
 		     (irc:events:filter r)
 		     (reader)))))))
     (reader)))
