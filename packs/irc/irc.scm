@@ -38,7 +38,7 @@
 
 ; handle PONG from remote server send a PING response
 (define (irc:ping-pong event)
-  (if (and irc:ping-pong-flag (pregexp-match "PING :" event))
+  (if (and irc:ping-pong-flag (pair? (pregexp-match "PING :" event)))
     (irc:raw:write (conc "PONG :" (cadr (pregexp-split ":" event))))))
 
 ; handle irc events
@@ -47,12 +47,13 @@
 	     (lambda ()
 	       (let ((r (irc:raw:read)))
 		 (unless (null? r)
-		   (begin
-		     (set! irc:events:last r)
-		     (irc:events:log r)
-		     (irc:ping-pong r)
-		     (irc:events:filter r)
-		     (reader)))))))
+		   (let ((event (symbol->string r)))
+		     (begin
+		       (set! irc:events:last event)
+		       (irc:events:log event)
+		       (irc:ping-pong event)
+		       (irc:events:filter event)
+		       (reader))))))))
     (reader)))
 
 ; start up the event handler
