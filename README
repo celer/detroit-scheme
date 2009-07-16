@@ -1,18 +1,4 @@
-[Building]
-
-- prerequisites:
-  
-  - Ant
-  - Java 1.6
-
-- building:
-
-  on most systems simply do: ./detroit
-  or type: ant
-  build packages: ant packs
-  build everything: ant all
-
-- cleaning:
- 
-  to remove cruft: ant clean
- 
+about: A Minimal Scheme Interpreter for the JVM 
+prerequisites: Ant, Java JDK 1.6
+building: ./detroit
+cleaning: ant clean

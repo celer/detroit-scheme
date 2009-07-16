@@ -1,4 +1,4 @@
-<project name="detroit" default="dist" basedir=".">
+<project name="detroit" default="all" basedir=".">
     <description> build file for detroit scheme </description>
   <property name="src" location="src"/>
   <property name="build" location="build"/>
