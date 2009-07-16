@@ -1593,6 +1593,17 @@
 (define quit exit)
 (define (sleep s) ((method "java.lang.Thread" "sleep" "long") (* 1000 s)))
 
+;; file utilities
+
+; create a new file object
+(define (file:new name)
+  ((constructor "java.io.File" "java.lang.String") name))
+
+; check if the path exists
+(define (file:exist? path)
+  ((method "java.io.File" "exists")
+   (file:new path)))
+
 ;; require syntax
 
 ; make a require path
@@ -1617,8 +1628,13 @@
 
 ; load a package by name
 (define (include name)
-  (load-jar (string-append (symbol->string name) ".jar")) #t)
+ (let* ((jar-file (string-append (symbol->string name) ".jar"))
+	(jar-file-installed (conc "/usr/local/lib/detroit/" jar-file)))
+  (cond ((file:exist? jar-file) (load-jar jar-file))
+   ((file:exist? jar-file-installed) (load-jar jar-file-installed))
+   (else #f))))
 
 ; run a test
 (define (test name)
   (require (string->symbol (conc "test/" (symbol->string name)))))
+

@@ -8,7 +8,6 @@
 (use 'sys)
 (use 'format)
 (use 'process)
-(use 'file)
 (use 'repl)
 (use 'resource)
 (use 'and-let)

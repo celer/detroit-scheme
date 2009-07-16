@@ -30,6 +30,23 @@
 
   <target name="all" depends="dist, packs" description="build everything" />
 
+  <target name="install" depends="all" description="install" >
+	<mkdir dir="/usr/local/lib/detroit" />
+	<copy todir="/usr/local/lib/detroit">
+	  <fileset dir="." >
+		<include name="*.jar" />
+		<include name="detroit" />
+	  </fileset> 
+	</copy>	
+	<chmod file="/usr/local/lib/detroit/detroit" perm="755" />
+	<symlink link="/usr/local/bin/detroit" resource="/usr/local/lib/detroit/detroit" />
+  </target>
+  
+  <target name="uninstall" description="uninstall" >
+     <symlink action="delete" link="/usr/local/bin/detroit"/>
+     <delete dir="/usr/local/lib/detroit"/>
+  </target>
+
   <target name="clean" description="clean up" >
     <delete dir="${build}"/>
     <delete file="detroit.jar"/>
