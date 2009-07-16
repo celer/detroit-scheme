@@ -1070,15 +1070,19 @@
 	       (lambda ()
 		 (close-input-port port)))))
 
-	 (define (call-with-output-file name proc)
-	   (let ((port (open-output-file name)))
-	     (try-catch-finally
-	       (lambda ()
-		 (proc port))
-	       #f
-	       (lambda ()
-		 (close-output-port port)))))
+        (define (parse-output-flag flag)
+	  (if (pair? flag)
+	    (car flag)
+	    #f))
 
+	(define (call-with-output-file name proc . flag)
+	  (let ((port (open-output-file name (parse-output-flag flag))))
+	    (try-catch-finally
+	      (lambda ()
+		(proc port))
+	      #f
+	      (lambda ()
+		(close-output-port port)))))
 
 	 (define input-port? (make-type-predicate "java.io.BufferedReader"))
 	 (define output-port? (make-type-predicate "java.io.Writer"))
@@ -1126,9 +1130,9 @@
 		 (current-input-port orig)
 		 (close-input-port port)))))
 
-	 (define (with-output-to-file name thunk)
+         (define (with-output-to-file name thunk . flag)
 	   (let ((orig (current-output-port))
-		 (port (open-output-file name)))
+		 (port (open-output-file name (parse-output-flag flag))))
 	     (try-catch-finally
 	       (lambda ()
 		 (current-output-port port)
@@ -1143,10 +1147,14 @@
 	   (new-buffered-reader
 	     ((constructor "java.io.FileReader" "java.lang.String") name)))
 
-	 (define (open-output-file name)
+         (define (open-output-file name . flag)
 	   (new-buffered-writer
-	     ((constructor "java.io.FileWriter" "java.lang.String") name)))
-
+	     ((constructor
+		"java.io.FileWriter"
+		"java.lang.String"
+		"boolean")
+	      name
+	      (parse-output-flag flag))))
 
 	 (define close-input-port (method "java.io.Reader" "close"))
 	 (define close-output-port (method "java.io.Writer" "close"))
