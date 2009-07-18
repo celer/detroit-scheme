@@ -1358,11 +1358,31 @@
 	     (write f os)
 	     (get-output-string os)))
 
-	 (define (thread thunk)
+	 (define (make-thread thunk)
 	   ((constructor "detroit.NativeThread" "detroit.Interpreter" "java.lang.Object") (interpreter) thunk))
 
-	 (define (thread-stop t)
-	   ((method "java.lang.Thread" "stop") t))
+	 (define (thread-terminate! t)
+	   ((method "java.lang.Thread" "interrupt") t))
+
+	 (define (thread-start! t)
+	   ((method "java.lang.Thread" "start") t)
+	   t)
+
+	 (define (thread-yield! t)
+	   ((method "java.lang.Thread" "yield") t))
+
+	 (define (thread-join! t . timeout)
+	   (if (pair? timeout)
+	     ((method "java.lang.Thread" "join" "long") t (car timeout))
+	     ((method "java.lang.Thread" "join") t)))
+
+	 (define (thread-sleep! t . timeout)
+	   (if (pair? timeout)
+	     ((method "java.lang.Thread" "sleep" "long") t (car timeout))
+	     ((method "java.lang.Thread" "sleep") t)))
+
+	 (define (thread thunk) (thread-start! (make-thread thunk)))
+	 (define thread-stop thread-terminate!)
 
 	 (define new-io-print-stream (constructor "java.io.PrintStream" "java.io.OutputStream"))
 	 (define (buffered-reader-readline i) ((method "java.io.BufferedReader" "readLine") i))

@@ -12,18 +12,15 @@ public class NativeThread extends Thread
 	{
 		this.interpreter = interpreter;
 		this.thunk = thunk;
-		start();
 	}
 
 	public void run()
 	{
-		try
-		{
+		try {
 			interpreter.apply(thunk, null);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		} catch (Exception e) {
 		}
 	}
 }

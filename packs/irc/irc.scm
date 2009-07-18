@@ -91,7 +91,8 @@
 
 ; disconnect from the server and send a quite message
 (define (irc:quit message)
-  (irc:raw:write (conc "QUIT :" message)))
+  (irc:raw:write (conc "QUIT :" message))
+  (thread-stop irc:events:tid))
 
 ; join a channel
 (define (irc:join channel)
