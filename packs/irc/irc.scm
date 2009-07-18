@@ -59,9 +59,10 @@
 ; start up the event handler
 (define (irc:events:start)
   (set! irc:events:tid
-    (thread
-      (lambda ()
-        (irc:events:handler)))))
+    (thread-start! 
+      (make-thread
+	(lambda ()
+	  (irc:events:handler))))))
 
 ; make a connection to the irc server
 (define (irc:connect server port . password)
@@ -92,7 +93,7 @@
 ; disconnect from the server and send a quite message
 (define (irc:quit message)
   (irc:raw:write (conc "QUIT :" message))
-  (thread-stop irc:events:tid))
+  (thread-terminate! irc:events:tid))
 
 ; join a channel
 (define (irc:join channel)

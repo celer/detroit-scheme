@@ -89,9 +89,10 @@
 	       (try-catch-finally
 		 (lambda ()
 		   (let ((cs (tcp:server-accept srv)))
-		     (thread
-		       (lambda ()
-			 (tcp:accept-handler proc cs))))
+		     (thread-start! 
+		       (make-thread
+			 (lambda ()
+			   (tcp:accept-handler proc cs)))))
 		   (accept-loop))
 		 #f
 		 #f))))
@@ -102,15 +103,16 @@
   (let ((srv (tcp:server-socket port)))
     (tcp:server-reuse srv #t)
     (let ((tid
-	    (thread
-	      (lambda ()
-		(tcp:server-accept-loop proc srv)))))
+	    (thread-start! 
+	      (make-thread
+		(lambda ()
+		  (tcp:server-accept-loop proc srv))))))
       (list srv tid))))
 
 ; shutdown a running server
 (define (tcp:server-shutdown sid)
   (tcp:server-close (car sid))
-  (thread-stop (cadr sid)))
+  (thread-terminate! (cadr sid)))
 
 ;; client
 

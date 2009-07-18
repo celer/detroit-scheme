@@ -6,12 +6,12 @@
   (test:loop message))
 
 (define (test:thread)
-  (let ((one (thread (lambda () (test:loop "thread one"))))
-	(two (thread (lambda () (test:loop "thread two: join thread - ctrl-c me")))))
+  (let ((one (thread-start! (make-thread (lambda () (test:loop "thread one")))))
+	(two (thread-start! (make-thread (lambda () (test:loop "thread two: join thread - ctrl-c me"))))))
     (display "sleeping...") (newline)
     (sleep 5)
     (display "stopping...") (newline)
-    (thread-stop one)
+    (thread-terminate! one)
     (thread-join! two)))
 
 (test:thread)
