@@ -724,8 +724,12 @@
 	   open-output-string
 	   with-input-from-string
 	   with-output-to-string
-	   thread
-	   thread-stop
+           make-thread
+           thread-terminate!
+           thread-start!
+           thread-yield!
+           thread-join!
+           thread-sleep!
 	   new-io-print-stream
 	   buffered-reader-readline
 	   buffered-reader-close
@@ -1380,9 +1384,6 @@
 	   (if (pair? timeout)
 	     ((method "java.lang.Thread" "sleep" "long") t (car timeout))
 	     ((method "java.lang.Thread" "sleep") t)))
-
-	 (define (thread thunk) (thread-start! (make-thread thunk)))
-	 (define thread-stop thread-terminate!)
 
 	 (define new-io-print-stream (constructor "java.io.PrintStream" "java.io.OutputStream"))
 	 (define (buffered-reader-readline i) ((method "java.io.BufferedReader" "readLine") i))
