@@ -1,3 +1,5 @@
+; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
+
 ; tests for extras library
 (use 'test)
 

@@ -1,3 +1,5 @@
+; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
+
 (use 'test)
 (include 'extras)
 (use 'read-file)
