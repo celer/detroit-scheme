@@ -9,7 +9,7 @@
   </target>
 
   <target name="compile" depends="init" description="compile the source" >
-    <javac srcdir="${src}" destdir="${build}" debug="true"/>
+    <javac srcdir="${src}" destdir="${build}" debug="false"/>
   </target>
 
   <target name="dist" depends="compile" description="generate the distribution" >
