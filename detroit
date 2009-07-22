@@ -1,5 +1,5 @@
 #!/bin/sh
-#Detroit Scheme is Copyright (c) 2008 Raymond Medeiros <rm@5ess.net> All Rights Reserved, see COPYING for further details.
+# Copyright (c) 2009, Raymond R. Medeiros. All rights reserved. 
 
 DT_HISTFILE=~/.detroit_history
 touch $DT_HISTFILE
