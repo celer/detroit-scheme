@@ -1334,10 +1334,15 @@
 				     (current-output-port)))))
 
 	   (set! display
-	     (lambda (form . opt-output-port)
-	       (output form #f '() (if (pair? opt-output-port)
-				     (car opt-output-port)
-				     (current-output-port))))))
+       (lambda (form . opt-output-port)
+         (output form #f '() 
+                 (if (pair? opt-output-port)
+                   (car opt-output-port)
+                   (current-output-port)))
+        (flush-output
+          (if (pair? opt-output-port)
+            (car opt-output-port)
+            (current-output-port))))))
 
 	 (define new-string-reader (constructor "java.io.StringReader"
 						"java.lang.String"))
