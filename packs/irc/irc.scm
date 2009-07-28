@@ -95,6 +95,10 @@
   (irc:raw:write (conc "QUIT :" message))
   (thread-terminate! irc:events:tid))
 
+; event handler join
+(define (irc:wait)
+  (thread-join! irc:events:tid))
+
 ; join a channel
 (define (irc:join channel)
   (irc:raw:write (conc "JOIN " channel)))
