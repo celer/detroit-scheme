@@ -1660,7 +1660,3 @@
    ((file:exist? jar-file-installed) (load-jar jar-file-installed))
    (else #f))))
 
-; run a test
-(define (test name)
-  (require (string->symbol (conc "test/" (symbol->string name)))))
-

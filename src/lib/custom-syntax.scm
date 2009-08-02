@@ -5,3 +5,8 @@
 ; put a string to the terminal
 (define (puts ln) (format #t "~a~%" ln))
 (define print puts)
+
+; run a test
+(define (test:unit name)
+  (require (string->symbol (conc "test/" (symbol->string name)))))
+
