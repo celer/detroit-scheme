@@ -5,7 +5,7 @@
 
 (define (repl prompt)
   (let loop ()
-    (if prompt (write-string "#;% ") 
+    (if prompt (write-string ";% ") 
       (write-string ""))
     (flush-output)
     (let ((form (read)))
