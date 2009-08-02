@@ -177,3 +177,14 @@
 (define (tcp:read io) 
   (buffered-reader-readline (tcp:io-get-input io)))
 
+; read-lines from io
+(define (tcp:read-lines io)
+  (letrec
+    ((collect-lines
+       (lambda (ln lines)
+         (cond ((or (eof-object? ln) (null? ln))
+                (reverse lines))
+               (else (collect-lines (net:read io) 
+                                    (cons ln lines)))))))
+    (collect-lines (net:read io) '())))
+
