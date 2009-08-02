@@ -13,4 +13,4 @@
 (use 'and-let)
 (use 'receive)
 (use 'case-lambda)
-
+(use 'custom-syntax)
