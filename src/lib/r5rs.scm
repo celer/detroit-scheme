@@ -724,12 +724,12 @@
 	   open-output-string
 	   with-input-from-string
 	   with-output-to-string
-           make-thread
-           thread-terminate!
-           thread-start!
-           thread-yield!
-           thread-join!
-           thread-sleep!
+     make-thread
+     thread-terminate!
+     thread-start!
+     thread-yield!
+     thread-join!
+     thread-sleep!
 	   new-io-print-stream
 	   buffered-reader-readline
 	   buffered-reader-close
