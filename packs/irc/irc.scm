@@ -10,6 +10,7 @@
 
 ; format: '(nick username hostname servername realname)
 (define irc:user #f)
+(define (irc:nick) (car irc:user))
 
 ; the last event recieved
 (define irc:events:last #f)

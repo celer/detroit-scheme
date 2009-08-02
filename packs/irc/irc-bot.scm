@@ -1,10 +1,8 @@
 ; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
-(use 'irc)
+;; IRC Bot Library
 
-; the nick of the irc bot
-; XXX: this should be taken from the user list instead
-(define irc:bot:nick "irc-bot")
+(use 'irc)
 
 ; evaluate commands directed to the bot
 (define (irc:bot:eval from command) 
@@ -13,15 +11,15 @@
 
 ; event filter for irc:bot, parses messages directly to the bot
 (define (irc:events:filter event)
-  (if (pair? (pregexp-match (conc ":" irc:bot:nick ":") event))
+  (if (pair? (pregexp-match (conc ":" (irc:nick) ":") event))
     (irc:bot:eval 
       (list-ref (pregexp-split " " event) 2)
-      (cadr (pregexp-split (conc ":" irc:bot:nick ": ") event))))
+      (cadr (pregexp-split (conc ":" (irc:nick) ": ") event))))
   event)
 
+; create a bot
 (define (irc:bot server port channel nick . password)
   (irc:connect server port)
-  (set! irc:bot:nick nick)
   (irc:set-user! nick nick "localhost" "localhost" nick)
   ; XXX: test this at some point
   (if (pair? password) (irc:say "nickserv" (conc "identify " (car password))))
