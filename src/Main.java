@@ -20,7 +20,7 @@ public class Main
 			Interpreter vm = new Interpreter();
 			int i, j;
 
-			Environment detroitlib = vm.getEnv("detroit");
+			Environment detroit = vm.getEnv("detroit");
 
 			if (args.length == 0)
 			{
@@ -48,7 +48,7 @@ public class Main
 					for (j=args.length -1; j>i; --j)
 						arglist = new Pair(args[j].toCharArray(), arglist);
 					vm.eval(new Pair("set!", new Pair("argv", new Pair(new Pair("quote", new Pair(arglist, null)), null))),
-							detroitlib);
+							detroit);
 				}
 			}
 
