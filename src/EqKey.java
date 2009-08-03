@@ -1,6 +1,5 @@
 // Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
-
 package detroit;
 
 public class EqKey
