@@ -1,6 +1,5 @@
 ; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
-
 ;; SSL library 
 
 (use 'keystore)

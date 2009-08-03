@@ -1,6 +1,5 @@
 ; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
-
 ;; Digest Library 
 
 ; get an instance of a specific algorithm
@@ -44,7 +43,7 @@
     (digest:update md (digest:string->bytes msg))
     (symbol->string
       (digest:bytes->hex
-	(digest:digest md)))))
+        (digest:digest md)))))
 
 ; MD5
 (define (digest:md5 msg)

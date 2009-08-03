@@ -1,6 +1,5 @@
 ; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
-
 ;; Networking API
 
 (use 'tcp)
@@ -21,8 +20,8 @@
     io
     (with-output-to-string
       (eval (with-input-from-string
-	      (tcp:read io))
-	    (current-environment))))
+              (tcp:read io))
+            (current-environment))))
   (tcp:close io)
   (tcp:close-socket cs))
 

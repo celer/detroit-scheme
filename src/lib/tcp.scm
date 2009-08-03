@@ -1,6 +1,5 @@
 ; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
-
 ;; TCP library 
 
 ;; server
@@ -85,17 +84,17 @@
 ; inner accept loop
 (define (tcp:server-accept-loop proc srv)
   (letrec ((accept-loop
-	     (lambda ()
-	       (try-catch-finally
-		 (lambda ()
-		   (let ((cs (tcp:server-accept srv)))
-		     (thread-start! 
-		       (make-thread
-			 (lambda ()
-			   (tcp:accept-handler proc cs)))))
-		   (accept-loop))
-		 #f
-		 #f))))
+             (lambda ()
+               (try-catch-finally
+                 (lambda ()
+                   (let ((cs (tcp:server-accept srv)))
+                     (thread-start! 
+                       (make-thread
+                         (lambda ()
+                           (tcp:accept-handler proc cs)))))
+                   (accept-loop))
+                 #f
+                 #f))))
     (accept-loop)))
 
 ; start a simple tcp server on a port send requests to procedure
@@ -103,10 +102,10 @@
   (let ((srv (tcp:server-socket port)))
     (tcp:server-reuse srv #t)
     (let ((tid
-	    (thread-start! 
-	      (make-thread
-		(lambda ()
-		  (tcp:server-accept-loop proc srv))))))
+            (thread-start! 
+              (make-thread
+                (lambda ()
+                  (tcp:server-accept-loop proc srv))))))
       (list srv tid))))
 
 ; shutdown a running server

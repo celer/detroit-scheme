@@ -1,6 +1,5 @@
 ; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
-
 (srfi 42)
 
 ; Copyright (c) 2005-2006 Sebastian Egner.
@@ -61,12 +60,12 @@
 
 (define (check-set-mode! mode)
   (set! check:mode
-        (case mode
-          ((off)           0)
-          ((summary)       1)
-          ((report-failed) 10)
-          ((report)        100)
-          (else (error "unrecognized mode" mode)))))
+    (case mode
+      ((off)           0)
+      ((summary)       1)
+      ((report-failed) 10)
+      ((report)        100)
+      (else (error "unrecognized mode" mode)))))
 
 (check-set-mode! 'report)
 
@@ -84,8 +83,8 @@
 
 (define (check:add-failed! expression actual-result expected-result)
   (set! check:failed
-        (cons (list expression actual-result expected-result)
-              check:failed)))
+    (cons (list expression actual-result expected-result)
+          check:failed)))
 
 (check-reset!)
 
@@ -103,9 +102,9 @@
 (define (check:report-correct cases)
   (display "correct")
   (if (not (= cases 1))
-      (begin (display " (")
-             (display cases)
-             (display " cases checked)")))
+    (begin (display " (")
+           (display cases)
+           (display " cases checked)")))
   (newline))
 
 (define (check:report-failed expected-result)
@@ -117,29 +116,29 @@
 
 (define (check-report)
   (if (>= check:mode 1)
-      (begin
+    (begin
+      (newline)
+      (display "; *** checks *** : ")
+      (display check:correct)
+      (display " correct, ")
+      (display (length check:failed))
+      (display " failed.")
+      (if (or (null? check:failed) (<= check:mode 1))
         (newline)
-        (display "; *** checks *** : ")
-        (display check:correct)
-        (display " correct, ")
-        (display (length check:failed))
-        (display " failed.")
-        (if (or (null? check:failed) (<= check:mode 1))
-            (newline)
-            (let* ((w (car (reverse check:failed)))
-                   (expression (car w))
-                   (actual-result (cadr w))
-                   (expected-result (caddr w)))                  
-              (display " First failed example:")
-              (newline)
-              (check:report-expression expression)
-              (check:report-actual-result actual-result)
-              (check:report-failed expected-result))))))
+        (let* ((w (car (reverse check:failed)))
+               (expression (car w))
+               (actual-result (cadr w))
+               (expected-result (caddr w)))                  
+          (display " First failed example:")
+          (newline)
+          (check:report-expression expression)
+          (check:report-actual-result actual-result)
+          (check:report-failed expected-result))))))
 
 (define (check-passed? expected-total-count)
   (and (= (length check:failed) 0)
        (= check:correct expected-total-count)))
-       
+
 ; -- simple checks --
 
 (define (check:proc expression thunk equal expected-result)
@@ -148,38 +147,38 @@
     ((1)
      (let ((actual-result (thunk)))
        (if (equal actual-result expected-result)
-           (check:add-correct!)
-           (check:add-failed! expression actual-result expected-result))))
+         (check:add-correct!)
+         (check:add-failed! expression actual-result expected-result))))
     ((10)
      (let ((actual-result (thunk)))
        (if (equal actual-result expected-result)
-           (check:add-correct!)
-           (begin
-             (check:report-expression expression)
-             (check:report-actual-result actual-result)
-             (check:report-failed expected-result)
-             (check:add-failed! expression actual-result expected-result)))))
+         (check:add-correct!)
+         (begin
+           (check:report-expression expression)
+           (check:report-actual-result actual-result)
+           (check:report-failed expected-result)
+           (check:add-failed! expression actual-result expected-result)))))
     ((100)
      (check:report-expression expression)
      (let ((actual-result (thunk)))
        (check:report-actual-result actual-result)
        (if (equal actual-result expected-result)
-           (begin (check:report-correct 1)
-                  (check:add-correct!))
-           (begin (check:report-failed expected-result)
-                  (check:add-failed! expression 
-				     actual-result 
-				     expected-result)))))
+         (begin (check:report-correct 1)
+                (check:add-correct!))
+         (begin (check:report-failed expected-result)
+                (check:add-failed! expression 
+                                   actual-result 
+                                   expected-result)))))
     (else (error "unrecognized check:mode" check:mode)))
   (if #f #f))
 
 (define-syntax check
   (syntax-rules (=>)
-    ((check expr => expected)
-     (check expr (=> equal?) expected))
-    ((check expr (=> equal) expected)
-     (if (>= check:mode 1)
-	 (check:proc 'expr (lambda () expr) equal expected)))))
+                ((check expr => expected)
+                 (check expr (=> equal?) expected))
+                ((check expr (=> equal) expected)
+                 (if (>= check:mode 1)
+                   (check:proc 'expr (lambda () expr) equal expected)))))
 
 ; -- parametric checks --
 
@@ -188,75 +187,75 @@
         (expression (cadr w))
         (actual-result (caddr w))
         (expected-result (cadddr w))
-	(cases (car (cddddr w))))
+        (cases (car (cddddr w))))
     (if correct?
-        (begin (if (>= check:mode 100)
-                   (begin (check:report-expression expression)
-                          (check:report-actual-result actual-result)
-                          (check:report-correct cases)))
-               (check:add-correct!))
-        (begin (if (>= check:mode 10)
-                   (begin (check:report-expression expression)
-                          (check:report-actual-result actual-result)
-                          (check:report-failed expected-result)))
-               (check:add-failed! expression 
-				  actual-result 
-				  expected-result)))))
+      (begin (if (>= check:mode 100)
+               (begin (check:report-expression expression)
+                      (check:report-actual-result actual-result)
+                      (check:report-correct cases)))
+             (check:add-correct!))
+      (begin (if (>= check:mode 10)
+               (begin (check:report-expression expression)
+                      (check:report-actual-result actual-result)
+                      (check:report-failed expected-result)))
+             (check:add-failed! expression 
+                                actual-result 
+                                expected-result)))))
 
 (define-syntax check-ec:make
   (syntax-rules (=>)
-    ((check-ec:make qualifiers expr (=> equal) expected (arg ...))
-     (if (>= check:mode 1)
-         (check:proc-ec
-	  (let ((cases 0))
-	    (let ((w (first-ec 
-		      #f
-		      qualifiers
-		      (:let equal-pred equal)
-		      (:let expected-result expected)
-		      (:let actual-result
-                            (let ((arg arg) ...) ; (*)
-                              expr))
-		      (begin (set! cases (+ cases 1)))
-		      (if (not (equal-pred actual-result expected-result)))
-		      (list (list 'let (list (list 'arg arg) ...) 'expr)
-			    actual-result
-			    expected-result
-			    cases))))
-	      (if w
-		  (cons #f w)
-		  (list #t 
-			'(check-ec qualifiers 
-				   expr (=> equal) 
-				   expected (arg ...))
-			(if #f #f)
-		        (if #f #f)
-			cases)))))))))
+                ((check-ec:make qualifiers expr (=> equal) expected (arg ...))
+                 (if (>= check:mode 1)
+                   (check:proc-ec
+                     (let ((cases 0))
+                       (let ((w (first-ec 
+                                  #f
+                                  qualifiers
+                                  (:let equal-pred equal)
+                                  (:let expected-result expected)
+                                  (:let actual-result
+                                        (let ((arg arg) ...) ; (*)
+                                          expr))
+                                  (begin (set! cases (+ cases 1)))
+                                  (if (not (equal-pred actual-result expected-result)))
+                                  (list (list 'let (list (list 'arg arg) ...) 'expr)
+                                        actual-result
+                                        expected-result
+                                        cases))))
+                         (if w
+                           (cons #f w)
+                           (list #t 
+                                 '(check-ec qualifiers 
+                                            expr (=> equal) 
+                                            expected (arg ...))
+                                 (if #f #f)
+                                 (if #f #f)
+                                 cases)))))))))
 
 ; (*) is a compile-time check that (arg ...) is a list
 ; of pairwise disjoint bound variables at this point.
 
 (define-syntax check-ec
   (syntax-rules (nested =>)
-    ((check-ec expr => expected)
-     (check-ec:make (nested) expr (=> equal?) expected ()))
-    ((check-ec expr (=> equal) expected)
-     (check-ec:make (nested) expr (=> equal) expected ()))
-    ((check-ec expr => expected (arg ...))
-     (check-ec:make (nested) expr (=> equal?) expected (arg ...)))
-    ((check-ec expr (=> equal) expected (arg ...))
-     (check-ec:make (nested) expr (=> equal) expected (arg ...)))
+                ((check-ec expr => expected)
+                 (check-ec:make (nested) expr (=> equal?) expected ()))
+                ((check-ec expr (=> equal) expected)
+                 (check-ec:make (nested) expr (=> equal) expected ()))
+                ((check-ec expr => expected (arg ...))
+                 (check-ec:make (nested) expr (=> equal?) expected (arg ...)))
+                ((check-ec expr (=> equal) expected (arg ...))
+                 (check-ec:make (nested) expr (=> equal) expected (arg ...)))
 
-    ((check-ec qualifiers expr => expected)
-     (check-ec:make qualifiers expr (=> equal?) expected ()))
-    ((check-ec qualifiers expr (=> equal) expected)
-     (check-ec:make qualifiers expr (=> equal) expected ()))
-    ((check-ec qualifiers expr => expected (arg ...))
-     (check-ec:make qualifiers expr (=> equal?) expected (arg ...)))
-    ((check-ec qualifiers expr (=> equal) expected (arg ...))
-     (check-ec:make qualifiers expr (=> equal) expected (arg ...)))
+                ((check-ec qualifiers expr => expected)
+                 (check-ec:make qualifiers expr (=> equal?) expected ()))
+                ((check-ec qualifiers expr (=> equal) expected)
+                 (check-ec:make qualifiers expr (=> equal) expected ()))
+                ((check-ec qualifiers expr => expected (arg ...))
+                 (check-ec:make qualifiers expr (=> equal?) expected (arg ...)))
+                ((check-ec qualifiers expr (=> equal) expected (arg ...))
+                 (check-ec:make qualifiers expr (=> equal) expected (arg ...)))
 
-    ((check-ec (nested q1 ...) q etc ...)
-     (check-ec (nested q1 ... q) etc ...))
-    ((check-ec q1 q2             etc ...)
-     (check-ec (nested q1 q2)    etc ...))))
+                ((check-ec (nested q1 ...) q etc ...)
+                 (check-ec (nested q1 ... q) etc ...))
+                ((check-ec q1 q2             etc ...)
+                 (check-ec (nested q1 q2)    etc ...))))

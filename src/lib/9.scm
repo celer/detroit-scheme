@@ -1,6 +1,4 @@
 ; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
-
-
 ; This implements a record abstraction that is identical to vectors,
 ; except that they are not vectors (VECTOR? returns false when given a
 ; record and RECORD? returns false when given a vector).  The following
@@ -51,31 +49,31 @@
 
 (define-syntax define-record-type
   (syntax-rules ()
-    ((define-record-type type
-       (constructor constructor-tag ...)
-       predicate
-       (field-tag accessor . more) ...)
-     (begin
-       (define type
-         (make-record-type 'type '(field-tag ...)))
-       (define constructor
-         (record-constructor type '(constructor-tag ...)))
-       (define predicate
-         (record-predicate type))
-       (define-record-field type field-tag accessor . more)
-       ...))))
+                ((define-record-type type
+                                     (constructor constructor-tag ...)
+                                     predicate
+                                     (field-tag accessor . more) ...)
+                 (begin
+                   (define type
+                     (make-record-type 'type '(field-tag ...)))
+                   (define constructor
+                     (record-constructor type '(constructor-tag ...)))
+                   (define predicate
+                     (record-predicate type))
+                   (define-record-field type field-tag accessor . more)
+                   ...))))
 
 ; An auxilliary macro for define field accessors and modifiers.
 ; This is needed only because modifiers are optional.
 
 (define-syntax define-record-field
   (syntax-rules ()
-    ((define-record-field type field-tag accessor)
-     (define accessor (record-accessor type 'field-tag)))
-    ((define-record-field type field-tag accessor modifier)
-     (begin
-       (define accessor (record-accessor type 'field-tag))
-       (define modifier (record-modifier type 'field-tag))))))
+                ((define-record-field type field-tag accessor)
+                 (define accessor (record-accessor type 'field-tag)))
+                ((define-record-field type field-tag accessor modifier)
+                 (begin
+                   (define accessor (record-accessor type 'field-tag))
+                   (define modifier (record-modifier type 'field-tag))))))
 
 ; We define the following procedures:
 ; 
@@ -140,7 +138,7 @@
           ((eq? tag (car tags))
            i)
           (else
-           (loop (+ i 1) (cdr tags))))))
+            (loop (+ i 1) (cdr tags))))))
 
 ;----------------
 ; Now we are ready to define RECORD-CONSTRUCTOR and the rest of the
@@ -155,14 +153,14 @@
     (lambda args
       (if (= (length args)
              arg-count)
-          (let ((new (make-record (+ size 1))))
-            (record-set! new 0 type)
-            (for-each (lambda (arg i)
-			(record-set! new i arg))
-                      args
-                      indexes)
-            new)
-          (error "wrong number of arguments to constructor" type args)))))
+        (let ((new (make-record (+ size 1))))
+          (record-set! new 0 type)
+          (for-each (lambda (arg i)
+                      (record-set! new i arg))
+                    args
+                    indexes)
+          new)
+        (error "wrong number of arguments to constructor" type args)))))
 
 (define (record-predicate type)
   (lambda (thing)
@@ -176,8 +174,8 @@
       (if (and (record? thing)
                (eq? (record-type thing)
                     type))
-          (record-ref thing index)
-          (error "accessor applied to bad value" type tag thing)))))
+        (record-ref thing index)
+        (error "accessor applied to bad value" type tag thing)))))
 
 (define (record-modifier type tag)
   (let ((index (field-index type tag)))
@@ -185,6 +183,6 @@
       (if (and (record? thing)
                (eq? (record-type thing)
                     type))
-          (record-set! thing index value)
-          (error "modifier applied to bad value" type tag thing)))))
+        (record-set! thing index value)
+        (error "modifier applied to bad value" type tag thing)))))
 

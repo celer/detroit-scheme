@@ -1,7 +1,6 @@
 ; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
-
-; useful libraries
+; core libraries 
 (use 'syntax)
 (use 'let-optionals)
 (use 'java)
