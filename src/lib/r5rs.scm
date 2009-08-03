@@ -394,7 +394,6 @@
 				 ,form)
 			      (current-environment))))
 
-
 (define make-char-array (constructor "detroit.CharArray" "[C"))
 (define char-array? (make-type-predicate "detroit.CharArray"))
 (define char-array-of (field "detroit.CharArray" "charArray"))
@@ -526,82 +525,6 @@
 (define interaction-environment current-environment)
 
 (define lib-macros (field "detroit.Library" "macros"))
-
-(add-macro 'library
-	   (let ((expand-macros (method "detroit.Interpreter" "expandMacros" "java.lang.Object" "java.util.Hashtable"))
-		 (lib-exports (field "detroit.Library" "exports"))
-		 (lib-symbol-table (field "detroit.Library" "symbolTable"))
-		 (lib-slots (field "detroit.Library" "slots"))
-		 (j-vector-length (method "java.util.Vector" "size"))
-		 (j-vector-add (method "java.util.Vector" "addElement" "java.lang.Object"))
-		 (import! #f)
-		 (ht-copy (lambda (src dst sym)
-			    (native-hash-table-set! dst sym (native-hash-table-ref/default src sym)))))
-
-	     (set! import! (lambda (source target)
-			     (let loop ((exports (lib-exports source)))
-			       (unless (null? exports)
-				 (cond
-				   ((native-hash-table-exists? (lib-symbol-table source) (car exports))
-				    (native-hash-table-set! (lib-symbol-table target) (car exports) (native-hash-table-ref/default (lib-symbol-table source) (car exports))))
-				   ((native-hash-table-exists? (lib-macros source) (car exports))
-				    (native-hash-table-set! (lib-macros target) (car exports) (native-hash-table-ref/default (lib-macros source) (car exports)))))
-				 (loop (cdr exports))))))
-	     (lambda (name export import . forms)
-	       (when (symbol? name)
-		 (set! name (list name)))
-
-	       (let ((lib (get-lib (interpreter) name))
-		     (old-lib (current-environment)))
-
-		 (when (null? lib)
-		   (set! lib ((constructor "detroit.Library")))
-		   (detroit.libs (interpreter)
-				  (cons (cons name lib)
-					(detroit.libs (interpreter)))))
-
-		 (current-environment lib)
-
-		 (lib-exports lib (cdr export))
-
-		 (map
-		   (lambda (imp)
-		     (import! (get-lib (interpreter) imp) lib))
-		   (cdr import))
-
-		 (set! forms (map (lambda (form)
-				    (expand-macros (interpreter) form (lib-macros lib)))
-				  forms))
-
-		 (let loop ((forms forms))
-		   (cond
-		     ((null? forms))
-		     ((and (pair? (car forms))
-			   (eq? (caar forms) 'begin))
-		      (loop (cdar forms))
-		      (loop (cdr forms)))
-		     ((and (pair? (car forms))
-			   (eq? (caar forms) 'define))
-		      (let ((name (cadar forms))
-			    (st (lib-symbol-table lib)))
-			(if (pair? name)
-			  (set! name (car name)))
-			(if (native-hash-table-exists? st name)
-			  #f
-			  (begin
-			    (native-hash-table-set! st name (cons (lib-slots lib)
-								  (j-vector-length (lib-slots lib))))
-			    (j-vector-add (lib-slots lib) (unspecified)))))
-		      (loop (cdr forms)))
-		     (else
-		       (loop (cdr forms)))))
-
-
-		 (full-eval (interpreter) identity (cons 'begin forms) lib)
-
-		 (current-environment old-lib))
-
-	       #f)))
 
 	 (add-macro 'define-macro
 		    (lambda (name+args . body)
