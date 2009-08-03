@@ -519,7 +519,8 @@
     (get-env (interpreter) name)
     name))
 
-(define current-environment (make-parameter 'r5rs lookup-environment))
+(define scheme-report-environment (make-parameter 'r5rs lookup-environment))
+(define current-environment scheme-report-environment)
 (define interaction-environment current-environment)
 
 (define lib-macros (field "detroit.Environment" "macros"))
