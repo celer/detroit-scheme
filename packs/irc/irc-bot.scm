@@ -12,7 +12,7 @@
                 (format #f "~a"
                         (eval (with-input-from-string
                                 command)
-                              (current-library)))))))
+                              (current-environment)))))))
 
 ; event filter for irc:bot, parses messages directly to the bot
 (define (irc:events:filter event)

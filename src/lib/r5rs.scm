@@ -392,7 +392,7 @@
 			      '()
 			      '(identity
 				 ,form)
-			      (current-library))))
+			      (current-environment))))
 
 
 (define make-char-array (constructor "detroit.CharArray" "[C"))
@@ -522,8 +522,8 @@
     (get-lib (interpreter) name)
     name))
 
-(define current-library (make-parameter 'r5rs lookup-library))
-(define interaction-environment current-library)
+(define current-environment (make-parameter 'r5rs lookup-library))
+(define interaction-environment current-environment)
 
 (define lib-macros (field "detroit.Library" "macros"))
 
@@ -552,7 +552,7 @@
 		 (set! name (list name)))
 
 	       (let ((lib (get-lib (interpreter) name))
-		     (old-lib (current-library)))
+		     (old-lib (current-environment)))
 
 		 (when (null? lib)
 		   (set! lib ((constructor "detroit.Library")))
@@ -560,7 +560,7 @@
 				  (cons (cons name lib)
 					(detroit.libs (interpreter)))))
 
-		 (current-library lib)
+		 (current-environment lib)
 
 		 (lib-exports lib (cdr export))
 
@@ -599,7 +599,7 @@
 
 		 (full-eval (interpreter) identity (cons 'begin forms) lib)
 
-		 (current-library old-lib))
+		 (current-environment old-lib))
 
 	       #f)))
 
@@ -755,13 +755,13 @@
 	 (add-macro 'define-macro
 		    (lambda (name+args . body)
 		      (native-hash-table-set!
-			(lib-macros (current-library))
+			(lib-macros (current-environment))
 			(car name+args)
 			(full-eval (interpreter)
 				   identity
 				   `(lambda ,(cdr name+args)
 				      . ,body)
-				   (current-library)))
+				   (current-environment)))
 		      #f))
 
 
@@ -1404,7 +1404,7 @@
 	 (define load
 	   (let ((load-from-jar (method "detroit.Interpreter" "loadFromJar" "java.lang.String" "detroit.Library")))
 	     (lambda (filename)
-	       (load-from-jar (interpreter) filename (current-library)))))
+	       (load-from-jar (interpreter) filename (current-environment)))))
 
 	 (set! debug
 	   (lambda (x)
@@ -1427,7 +1427,7 @@
 	   make-parameter
 	   gensym
 	   interpreter
-	   current-library
+	   current-environment
 	   make-type-predicate
 	   make-array
 	   debug
@@ -1458,7 +1458,7 @@
 	      make-parameter
 	      gensym
 	      interpreter
-	      current-library
+	      current-environment
 	      make-type-predicate
 	      make-array
 	      jstring

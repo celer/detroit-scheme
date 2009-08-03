@@ -6,7 +6,7 @@
   (let ((r (eval 
     (with-input-from-string 
       (with-output-to-string '(+ 2 2))) 
-    (current-library))))
+    (current-environment))))
 	(check r => 4)))
 
 (test:with-io-strings)

@@ -12,7 +12,7 @@
       (unless (eof-object? form)
 	(try-catch-finally
 	  (lambda () 
-	    (call-with-values (lambda () (eval form (current-library)))
+	    (call-with-values (lambda () (eval form (current-environment)))
 			      (lambda values
 				(for-each (lambda (value)
 					    (write value)

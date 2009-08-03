@@ -22,7 +22,7 @@
     (with-output-to-string
       (eval (with-input-from-string
 	      (tcp:read io))
-	    (current-library))))
+	    (current-environment))))
   (tcp:close io)
   (tcp:close-socket cs))
 

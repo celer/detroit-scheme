@@ -57,7 +57,7 @@ public class Main
 				if (args[i].equals("-e"))
 				{
 					vm.load(new java.io.StringReader(args[++i]),
-							(Library)vm.eval(new Pair("current-library", null), vm.r5rs));
+							(Library)vm.eval(new Pair("current-environment", null), vm.r5rs));
 				}
 				else if (args[i].equals("--"))
 					break;
