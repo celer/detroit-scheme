@@ -603,155 +603,6 @@
 
 	       #f)))
 
-
-(library r5rs
-	 (export
-	   set! if
-	   define-macro
-	   cond
-	   case
-	   and
-	   or
-	   let
-	   let*
-	   letrec*
-	   letrec
-	   do
-	   quasiquote
-	   eq?  eqv? equal?
-	   number? complex? real? rational? integer?
-	   exact? inexact?
-	   = < > <= >=
-	   zero? positive? negative? odd? even?
-	   max min
-	   + * - /
-	   abs
-	   quotient remainder modulo
-	   gcd lcm
-	   numerator denominator
-	   floor ceiling truncate round
-	   rationalize
-	   exp log sin cos tan asin acos atan
-	   sqrt expt
-	   make-rectangular make-polar real-part imag-part magnitude angle
-	   exact->inexact inexact->exact
-	   number->string string->number
-	   not
-	   boolean?
-	   pair?
-	   cons car cdr set-car!  set-cdr!
-	   caar cadr cdar cddr
-	   caaar caadr cadar caddr cdaar cdadr cddar cdddr
-	   caaaar caaadr caadar caaddr cadaar cadadr caddar cadddr cdaaar cdaadr cdadar cdaddr cddaar cddadr cdddar cddddr
-	   null?
-	   list?
-	   list
-	   length
-	   append
-	   reverse
-	   list-tail
-	   list-ref
-	   memq memv member
-	   assq assv assoc
-	   symbol?
-	   symbol->string
-	   string->symbol
-	   char?
-	   char=? char<? char>? char<=? char>=?
-	   char-ci=? char-ci<? char-ci>? char-ci<=? char-ci>=?
-	   char-alphabetic? char-numeric? char-whitespace? char-upper-case? char-lower-case?
-	   char->integer
-	   integer->char
-	   char-upcase
-	   char-downcase
-	   string?
-	   make-string
-	   string
-	   string-length
-	   string-ref
-	   string-set!
-	   string=? string-ci=?
-	   string<? string>? string<=? string>=?
-	   string-ci<? string-ci>? string-ci<=? string-ci>=?
-	   substring
-	   string-append
-	   conc
-	   string->list
-	   list->string
-	   string-copy
-	   string-fill!
-	   vector?
-	   make-vector
-	   vector
-	   vector-length
-	   vector-ref
-	   vector-set!
-	   vector->list
-	   list->vector
-	   procedure?
-	   apply
-	   map
-	   for-each
-	   force delay
-	   call/cc
-	   call-with-current-continuation
-	   values
-	   call-with-values
-	   dynamic-wind
-	   eval
-	   call-with-input-file call-with-output-file
-	   input-port? output-port?
-	   current-input-port current-output-port
-	   current-error-port
-	   with-input-from-file with-output-to-file
-	   open-input-file open-output-file
-	   close-input-port close-output-port
-	   read
-	   read-char
-	   peek-char
-	   eof-object?
-	   char-ready?
-	   write
-	   display
-	   newline
-	   write-char
-	   new-buffered-reader
-	   new-input-stream-reader
-	   new-output-stream-writer
-	   new-string-reader
-	   open-input-string
-	   get-output-string
-	   open-output-string
-	   with-input-from-string
-	   with-output-to-string
-     make-thread
-     thread-terminate!
-     thread-start!
-     thread-yield!
-     thread-join!
-     thread-sleep!
-	   new-io-print-stream
-	   buffered-reader-readline
-	   buffered-reader-close
-	   print-stream-println
-	   print-stream-flush
-	   print-stream-close
-	   new-java-io-printwriter 
-	   print-writer-print
-	   print-writer-close
-	   print-writer-flush
-	   load
-	   load-jar
-	   get-environment-variable
-	   get-environment-variables
-	   unspecified
-	   eof-object
-	   when
-	   unless
-	   library)
-
-	 (import)
-
 	 (add-macro 'define-macro
 		    (lambda (name+args . body)
 		      (native-hash-table-set!
@@ -1417,55 +1268,6 @@
 	 (define get-environment-variables (method "java.lang.System" "getenv"))
 
 
-	 )
-
-(library detroit
-	 (export 
-	   class constructor method field
-	   try-catch-finally
-	   throw
-	   make-parameter
-	   gensym
-	   interpreter
-	   current-environment
-	   make-type-predicate
-	   make-array
-	   debug
-	   jstring
-	   jfloat
-	   jbyte
-	   write-string
-	   flush-output
-	   synchronized
-	   error
-	   argv)
-
-	 (import r5rs)
-
-
-	 (define-macro (imp . names)
-		       `(begin
-			  . ,(map (lambda (name)
-				    `(define ,name (eval ',name 'r5rs)))
-				  names)))
-
-	 (imp class
-	      constructor
-	      method
-	      field
-	      try-catch-finally
-	      throw
-	      make-parameter
-	      gensym
-	      interpreter
-	      current-environment
-	      make-type-predicate
-	      make-array
-	      jstring
-	      write-string
-	      flush-output
-	      synchronized
-	      debug)
 
 	 (define jfloat (constructor "java.lang.Float" "double"))
 	 (define jbyte (constructor "java.lang.Byte" "byte"))
@@ -1481,52 +1283,7 @@
 	     (newline port)
 	     (throw (new-exception ((method "java.lang.Object" "toString") port)))))
 
-	 (define argv '()))
-
-
-(library hashtables
-	 (export
-	   hash-table? make-hash-table
-	   native-hash-table-ref native-hash-table-ref/default
-	   native-hash-table-set! native-hash-table-exists? native-hash-table-delete!
-	   native-hash-table-keys native-hash-table-values
-	   native-hash-table-map native-hash-table-for-each)
-
-	 (import r5rs
-		 detroit)
-
-
-	 (define-macro (imp . names)
-		       `(begin
-			  . ,(map (lambda (name)
-				    `(define ,name (eval ',name 'r5rs)))
-				  names)))
-
-	 (imp
-	   hash-table? make-hash-table
-	   native-hash-table-ref native-hash-table-ref/default
-	   native-hash-table-set! native-hash-table-exists? native-hash-table-delete!
-	   native-hash-table-keys native-hash-table-values
-	   native-hash-table-map native-hash-table-for-each))
-
-
-(library (r5rs arithmetic fixnum)
-	 (export
-
-	   fixnum-not
-	   fixnum-and
-	   fixnum-ior
-	   fixnum-xor
-
-	   bitwise-not
-	   bitwise-and
-	   bitwise-or
-	   bitwise-xor
-
-	   )
-
-	 (import r5rs)
-
+	 (define argv '())
 
 	 (define bitwise (eval 'bitwise 'r5rs))
 
@@ -1547,18 +1304,6 @@
 	 (define bitwise-or fixnum-ior)
 	 (define bitwise-xor fixnum-xor)
 
-
-	 )
-
-
-(library (r5rs i/o ports)
-	 (export
-
-	   open-string-input-port
-	   )
-
-	 (import r5rs detroit)
-
 	 (define new-buffered-reader (constructor "java.io.BufferedReader"
 						  "java.io.Reader"))
 	 (define new-string-reader (constructor "java.io.StringReader"
@@ -1566,8 +1311,6 @@
 
 	 (define (open-string-input-port str)
 	   (new-buffered-reader (new-string-reader str)))
-
-	 )
 
 (define (hash-table-ref ht key)
   (native-hash-table-ref ht (with-output-to-string key)))
