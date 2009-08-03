@@ -7,7 +7,12 @@
 ; evaluate commands directed to the bot
 (define (irc:bot:eval from command) 
   (cond ((pregexp-match "quit" command) (irc:quit "recieved quit command, shutting down..."))
-        (else (irc:say from command))))
+        (else (irc:say
+                from
+                (format #f "~a"
+                        (eval (with-input-from-string
+                                command)
+                              (current-library)))))))
 
 ; event filter for irc:bot, parses messages directly to the bot
 (define (irc:events:filter event)
