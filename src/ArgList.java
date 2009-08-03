@@ -40,7 +40,7 @@ public final class ArgList
 					return ((Object[])env.car)[arg.p2];
 				}
 			case Interpreter.OP_LIB:
-				return arg.libSlots.elementAt(arg.p1);
+				return arg.envSlots.elementAt(arg.p1);
 			case Interpreter.OP_ARG:
 				return currArgs[arg.p1];
 			case Interpreter.OP_LMBD:

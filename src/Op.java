@@ -9,16 +9,16 @@ public final class Op
 {
 	public int type;
 	public int p1, p2;
-	public Vector libSlots;
+	public Vector envSlots;
 	public Procedure proc;
 	public Object literal;
 
-	public Op(int type, int p1, int p2, Vector libSlots, Procedure proc, Object literal)
+	public Op(int type, int p1, int p2, Vector envSlots, Procedure proc, Object literal)
 	{
 		this.type = type;
 		this.p1 = p1;
 		this.p2 = p2;
-		this.libSlots = libSlots;
+		this.envSlots = envSlots;
 		this.proc = proc;
 		this.literal = literal;
 	}

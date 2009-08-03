@@ -231,7 +231,7 @@ public class Interpreter
                         ((Object[])env.car)[location.p2] = value;
                     }
                     else
-                        location.libSlots.setElementAt(value, location.p1);
+                        location.envSlots.setElementAt(value, location.p1);
 
                     argList.setNext(unspecified);
                     continue;
