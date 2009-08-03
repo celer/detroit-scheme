@@ -963,9 +963,9 @@ public class Interpreter
         return run(argList);
     }
 
-    public final Object eval(Object form, Environment lib) throws Exception
+    public final Object eval(Object form, Environment env) throws Exception
     {
-        return eval(identity, form, lib);
+        return eval(identity, form, env);
     }
 
     public final Environment getEnv(Object name)
@@ -1193,7 +1193,7 @@ public class Interpreter
         return depth < 2 || !argNames.containsKey(form);
     }
 
-    public final Op compile(Object form, Pair args, Pair env, Environment lib) throws Exception
+    public final Op compile(Object form, Pair args, Pair currEnv, Environment env) throws Exception
     {
         if (form instanceof String)
         {
@@ -1211,36 +1211,36 @@ public class Interpreter
             }
 
             int up = 0;
-            Pair scanEnv = env;
+            Pair scanEnv = currEnv;
             while (scanEnv != null)
             {
-                Pair envSlots = (Pair)scanEnv.car;
+                Pair currEnvSlots = (Pair)scanEnv.car;
                 int along = 0;
-                while (envSlots != null)
+                while (currEnvSlots != null)
                 {
-                    if (car(envSlots.car) == form)
+                    if (car(currEnvSlots.car) == form)
                     {
                         if (up > 0)
                         {
-                            ((Pair)envSlots.car).cdr = TRUE;
+                            ((Pair)currEnvSlots.car).cdr = TRUE;
                         }
                         return new Op(OP_ENV, up, along, null, null, null);
                     }
 
                     ++along;
-                    envSlots = envSlots.rest();
+                    currEnvSlots = currEnvSlots.rest();
                 }
 
                 ++up;
                 scanEnv = scanEnv.rest();
             }
 
-            if (!lib.symbolTable.containsKey(form))
+            if (!env.symbolTable.containsKey(form))
             {
-                lib.symbolTable.put(form, cons(lib.slots, new Integer(lib.slots.size())));
-                lib.slots.addElement(unspecified);
+                env.symbolTable.put(form, cons(env.slots, new Integer(env.slots.size())));
+                env.slots.addElement(unspecified);
             }
-            Pair slotInfo = (Pair)lib.symbolTable.get(form);
+            Pair slotInfo = (Pair)env.symbolTable.get(form);
             return new Op(OP_LIB, ((Integer)slotInfo.cdr).intValue(), 0, (Vector)slotInfo.car, null, null);
         }
 
@@ -1269,7 +1269,7 @@ public class Interpreter
                 ++numArgs;
             }
 
-            int envSize = numArgs;
+            int currEnvSize = numArgs;
 
             if (argForm != null)
             {
@@ -1283,16 +1283,16 @@ public class Interpreter
                     lastPair.cdr = cons(cons(argForm, FALSE), null);
                     lastPair = lastPair.rest();
                 }
-                ++envSize;
+                ++currEnvSize;
             }
 
-            if (envSize < 8 && canSkipEnv(body, argNames, 0))
+            if (currEnvSize < 8 && canSkipEnv(body, argNames, 0))
             {
-                envSize = -1;
+                currEnvSize = -1;
             }
             else
             {
-                env = cons(args, env);
+                currEnv = cons(args, currEnv);
                 args = null;
             }
 
@@ -1300,7 +1300,7 @@ public class Interpreter
             lastPair = ops;
             while (body != null)
             {
-                lastPair.cdr = cons(compile(car(body), args, env, lib), null);
+                lastPair.cdr = cons(compile(car(body), args, currEnv, env), null);
                 body = cdr(body);
                 lastPair = lastPair.rest();
             }
@@ -1310,7 +1310,7 @@ public class Interpreter
                           0,
                           0,
                           null,
-                          new Procedure(flags, numArgs, envSize, null,
+                          new Procedure(flags, numArgs, currEnvSize, null,
                                         "<lambda>",
                                         ops),
                           null);
@@ -1318,7 +1318,7 @@ public class Interpreter
 
         if (form instanceof Pair && car(form) == setSlot)
         {
-            return new Op(OP_LIT, 0, 0, null, null, compile(cdr(form), null, env, lib));
+            return new Op(OP_LIT, 0, 0, null, null, compile(cdr(form), null, currEnv, env));
         }
 
         if (form instanceof Pair && car(form) == "quote")
@@ -1327,11 +1327,11 @@ public class Interpreter
         return new Op(OP_LIT, 0, 0, null, null, form);
     }
 
-    public final Object eval(Object cont, Object form, Environment lib) throws Exception
+    public final Object eval(Object cont, Object form, Environment env) throws Exception
     {
 
         if (form instanceof Pair)
-            form = expandMacros(form, lib.macros);
+            form = expandMacros(form, env.macros);
 
         if (form instanceof Pair &&
                 car(form) == "begin")
@@ -1339,32 +1339,32 @@ public class Interpreter
             form = cdr(form);
             while (cdr(form) != null)
             {
-                eval(car(form), lib);
+                eval(car(form), env);
                 form = cdr(form);
             }
-            return eval(car(form), lib);
+            return eval(car(form), env);
         }
 
         if (form instanceof Pair &&
                 car(form) == "define")
         {
             Pair norm = normDefine((Pair)form);
-            if (!lib.symbolTable.containsKey(norm.car))
+            if (!env.symbolTable.containsKey(norm.car))
             {
-                lib.symbolTable.put(norm.car, cons(lib.slots, new Integer(lib.slots.size())));
-                lib.slots.addElement(unspecified);
+                env.symbolTable.put(norm.car, cons(env.slots, new Integer(env.slots.size())));
+                env.slots.addElement(unspecified);
             }
             form = cons("set!", norm);
         }
 
-        Object cps = cont == null ? form : cps(form, cont, lib.macros);
+        Object cps = cont == null ? form : cps(form, cont, env.macros);
 
         Pair ops = cons(null, null);
         Pair lastPair = ops;
         Pair body = (Pair)cps;
         while (body != null)
         {
-            lastPair.cdr = cons(compile(body.car, null, null, lib), null);
+            lastPair.cdr = cons(compile(body.car, null, null, env), null);
             body = body.rest();
             lastPair = lastPair.rest();
         }
@@ -1376,13 +1376,13 @@ public class Interpreter
         return run(argList);
     }
 
-    public final void load(java.io.Reader inp, Environment lib)
+    public final void load(java.io.Reader inp, Environment env)
     {
         try
         {
             Reader r = new Reader(inp);
             for (;;)
-                eval(r.read(), lib);
+                eval(r.read(), env);
         }
         catch (IOException e)
         {
@@ -1393,14 +1393,14 @@ public class Interpreter
         }
     }
 
-    public final void loadFromJar(String filename, Environment lib) throws Exception
+    public final void loadFromJar(String filename, Environment env) throws Exception
     {
         InputStream stream = Interpreter.class.getResourceAsStream("/" + filename);
 
         if (stream == null)
-            load(new FileReader(filename), lib);
+            load(new FileReader(filename), env);
         else
-            load(new InputStreamReader(stream), lib);
+            load(new InputStreamReader(stream), env);
     }
 
     public static boolean loadJar(String jar) throws Exception
