@@ -830,13 +830,13 @@
 		 (apply values results)))))
 
 	 (define eval
-	   (raw (lambda (cont form lib)
+	   (raw (lambda (cont form env)
 		  (interpreter
 		    (lambda (i)
 		      (lookup-environment
 			(lambda (l)
 			  (full-eval identity i cont form l))
-			lib))))))
+			env))))))
 
 	 (define (call-with-input-file name proc)
 	   (let ((port (open-input-file name)))
