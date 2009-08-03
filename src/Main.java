@@ -20,7 +20,7 @@ public class Main
 			Interpreter vm = new Interpreter();
 			int i, j;
 
-			Library detroitlib = vm.getLib("detroit");
+			Environment detroitlib = vm.getLib("detroit");
 
 			if (args.length == 0)
 			{
@@ -57,7 +57,7 @@ public class Main
 				if (args[i].equals("-e"))
 				{
 					vm.load(new java.io.StringReader(args[++i]),
-							(Library)vm.eval(new Pair("current-environment", null), vm.r5rs));
+							(Environment)vm.eval(new Pair("current-environment", null), vm.r5rs));
 				}
 				else if (args[i].equals("--"))
 					break;

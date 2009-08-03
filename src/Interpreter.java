@@ -26,7 +26,7 @@ public class Interpreter
     private static Boolean FALSE = Boolean.FALSE;
 
     public Pair libs = null;
-    public Library r5rs = new Library();
+    public Environment r5rs = new Environment();
 
     public static final Pair startList()
     {
@@ -963,12 +963,12 @@ public class Interpreter
         return run(argList);
     }
 
-    public final Object eval(Object form, Library lib) throws Exception
+    public final Object eval(Object form, Environment lib) throws Exception
     {
         return eval(identity, form, lib);
     }
 
-    public final Library getLib(Object name)
+    public final Environment getLib(Object name)
     {
         if (name instanceof String)
             name = cons(name, null);
@@ -976,7 +976,7 @@ public class Interpreter
         while (l != null)
         {
             if (equal(car(car(l)), name) == TRUE)
-                return (Library)cdr(car(l));
+                return (Environment)cdr(car(l));
             l = l.rest();
         }
         return null;
@@ -1193,7 +1193,7 @@ public class Interpreter
         return depth < 2 || !argNames.containsKey(form);
     }
 
-    public final Op compile(Object form, Pair args, Pair env, Library lib) throws Exception
+    public final Op compile(Object form, Pair args, Pair env, Environment lib) throws Exception
     {
         if (form instanceof String)
         {
@@ -1327,7 +1327,7 @@ public class Interpreter
         return new Op(OP_LIT, 0, 0, null, null, form);
     }
 
-    public final Object eval(Object cont, Object form, Library lib) throws Exception
+    public final Object eval(Object cont, Object form, Environment lib) throws Exception
     {
 
         if (form instanceof Pair)
@@ -1376,7 +1376,7 @@ public class Interpreter
         return run(argList);
     }
 
-    public final void load(java.io.Reader inp, Library lib)
+    public final void load(java.io.Reader inp, Environment lib)
     {
         try
         {
@@ -1393,7 +1393,7 @@ public class Interpreter
         }
     }
 
-    public final void loadFromJar(String filename, Library lib) throws Exception
+    public final void loadFromJar(String filename, Environment lib) throws Exception
     {
         InputStream stream = Interpreter.class.getResourceAsStream("/" + filename);
 
