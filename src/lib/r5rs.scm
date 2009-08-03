@@ -523,12 +523,12 @@
 (define current-environment scheme-report-environment)
 (define interaction-environment current-environment)
 
-(define lib-macros (field "detroit.Environment" "macros"))
+(define env-macros (field "detroit.Environment" "macros"))
 
 	 (add-macro 'define-macro
 		    (lambda (name+args . body)
 		      (native-hash-table-set!
-			(lib-macros (current-environment))
+			(env-macros (current-environment))
 			(car name+args)
 			(full-eval (interpreter)
 				   identity
