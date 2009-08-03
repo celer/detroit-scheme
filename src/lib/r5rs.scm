@@ -1,6 +1,5 @@
 ; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
-
 (define (list . items)
   items)
 
@@ -385,7 +384,7 @@
 				      ,(loop (cdr args)))))))))))))
 
 
-(define full-eval (method "detroit.Interpreter" "eval" "java.lang.Object" "java.lang.Object" "detroit.Library"))
+(define full-eval (method "detroit.Interpreter" "eval" "java.lang.Object" "java.lang.Object" "detroit.Environment"))
 
 (add-macro 'raw (lambda (form)
 		  `(full-eval (interpreter)
@@ -512,19 +511,18 @@
 	      (unspecified))
 	    (native-hash-table-ref/default thread-locals (current-thread) initial-value)))))))
 
-(define detroit.libs (field "detroit.Interpreter" "libs"))
-(define get-lib (method "detroit.Interpreter" "getLib" "java.lang.Object"))
+(define get-env (method "detroit.Interpreter" "getEnv" "java.lang.Object"))
 
-(define (lookup-library name)
+(define (lookup-environment name)
   (if (or (symbol? name)
 	  (pair? name))
-    (get-lib (interpreter) name)
+    (get-env (interpreter) name)
     name))
 
-(define current-environment (make-parameter 'r5rs lookup-library))
+(define current-environment (make-parameter 'r5rs lookup-environment))
 (define interaction-environment current-environment)
 
-(define lib-macros (field "detroit.Library" "macros"))
+(define lib-macros (field "detroit.Environment" "macros"))
 
 	 (add-macro 'define-macro
 		    (lambda (name+args . body)
@@ -834,7 +832,7 @@
 	   (raw (lambda (cont form lib)
 		  (interpreter
 		    (lambda (i)
-		      (lookup-library
+		      (lookup-environment
 			(lambda (l)
 			  (full-eval identity i cont form l))
 			lib))))))
@@ -1176,7 +1174,7 @@
 	 (define (print-writer-flush w) ((method "java.io.PrintWriter" "flush") w))
 
 	 (define load
-	   (let ((load-from-jar (method "detroit.Interpreter" "loadFromJar" "java.lang.String" "detroit.Library")))
+	   (let ((load-from-jar (method "detroit.Interpreter" "loadFromJar" "java.lang.String" "detroit.Environment")))
 	     (lambda (filename)
 	       (load-from-jar (interpreter) filename (current-environment)))))
 

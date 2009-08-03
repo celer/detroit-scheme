@@ -20,7 +20,7 @@ public class Main
 			Interpreter vm = new Interpreter();
 			int i, j;
 
-			Environment detroitlib = vm.getLib("detroit");
+			Environment detroitlib = vm.getEnv("detroit");
 
 			if (args.length == 0)
 			{

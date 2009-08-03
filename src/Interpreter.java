@@ -25,7 +25,7 @@ public class Interpreter
     private static Boolean TRUE = Boolean.TRUE;
     private static Boolean FALSE = Boolean.FALSE;
 
-    public Pair libs = null;
+    public Pair envs = null;
     public Environment r5rs = new Environment();
 
     public static final Pair startList()
@@ -949,7 +949,7 @@ public class Interpreter
                 identity = proc;
         }
 
-        libs = cons(cons(cons("r5rs", null), r5rs), libs);
+        envs = cons(cons(cons("r5rs", null), r5rs), envs);
 
         loadFromJar("detroit/lib/r5rs.scm", r5rs);
         loadFromJar("detroit/lib/init.scm", r5rs);
@@ -968,11 +968,11 @@ public class Interpreter
         return eval(identity, form, lib);
     }
 
-    public final Environment getLib(Object name)
+    public final Environment getEnv(Object name)
     {
         if (name instanceof String)
             name = cons(name, null);
-        Pair l = libs;
+        Pair l = envs;
         while (l != null)
         {
             if (equal(car(car(l)), name) == TRUE)
