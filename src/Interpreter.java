@@ -949,7 +949,7 @@ public class Interpreter
 
 		envs = cons(cons(cons("r5rs", null), r5rs), envs);
 
-		loadFromJar("detroit/lib/r5rs.scm", r5rs);
+		loadFromJar("detroit/lib/builtins.scm", r5rs);
 		loadFromJar("detroit/lib/init.scm", r5rs);
 	}
 
