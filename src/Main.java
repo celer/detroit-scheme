@@ -8,7 +8,7 @@ public class Main
 {
 
 	private static String banner = "Detroit Scheme";
-	private static String version = "v1.1";
+	private static String version = "v1.2";
 	private static String author = "Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.";
 
 	public static void main(String[] args) throws Exception
