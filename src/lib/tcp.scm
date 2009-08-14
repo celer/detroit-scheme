@@ -181,9 +181,8 @@
   (letrec
     ((collect-lines
        (lambda (ln lines)
-         (cond ((or (eof-object? ln) (null? ln))
+         (cond ((or (eof-object? ln) (null? ln) (zero? (string-length (symbol->string ln))))
                 (reverse lines))
                (else (collect-lines (tcp:read io) 
                                     (cons ln lines)))))))
     (collect-lines (tcp:read io) '())))
-
