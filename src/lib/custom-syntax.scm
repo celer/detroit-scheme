@@ -26,3 +26,8 @@
         ((input-port? object) 'input-port)
         ((output-port? object) 'output-port)
         (else #f)))
+
+; convert between a list of symbols <-> strings
+(define (symbols->strings symbol-list) (map symbol->string symbol-list))
+(define (strings->symbols string-list) (map string->symbol string-list))
+
