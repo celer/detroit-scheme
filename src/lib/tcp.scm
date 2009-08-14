@@ -183,7 +183,7 @@
        (lambda (ln lines)
          (cond ((or (eof-object? ln) (null? ln))
                 (reverse lines))
-               (else (collect-lines (net:read io) 
+               (else (collect-lines (tcp:read io) 
                                     (cons ln lines)))))))
-    (collect-lines (net:read io) '())))
+    (collect-lines (tcp:read io) '())))
 
