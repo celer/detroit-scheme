@@ -6,6 +6,7 @@
 (use 'java)
 (use 'sys)
 (use 'format)
+(use 'formatter)
 (use 'process)
 (use 'repl)
 (use 'resource)
