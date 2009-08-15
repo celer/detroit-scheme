@@ -7,6 +7,10 @@
       (string->symbol format)
       (make-array
         "java.lang.Object"
-        (strings->symbols
+        (map
+          (lambda (s)
+            (if (string? s)
+              (string->symbol s)
+              s))
           args)))))
 
