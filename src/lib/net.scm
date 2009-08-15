@@ -8,6 +8,7 @@
 (define net:print tcp:print)
 (define net:read tcp:read)
 (define net:read-lines tcp:read-lines)
+(define net:read-bytes tcp:read-bytes)
 (define net:close tcp:close)
 (define net:client tcp:client)
 (define net:server tcp:server)

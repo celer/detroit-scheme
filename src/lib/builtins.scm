@@ -1164,6 +1164,17 @@
     ((method "java.lang.Thread" "sleep") t)))
 
 (define new-io-print-stream (constructor "java.io.PrintStream" "java.io.OutputStream"))
+(define (buffered-reader-read-char i) ((method "java.io.BufferedReader" "read") i))
+(define (buffered-reader-read i len)
+  (letrec 
+    ((read-loop
+       (lambda (i c where)
+         (cond ((= where 0) 
+                (list->string 
+                  (reverse c)))
+               (else (read-loop i (cons (integer->char (buffered-reader-read-char i)) c) (- where 1)))))))
+    (read-loop i '() len)))
+
 (define (buffered-reader-readline i) ((method "java.io.BufferedReader" "readLine") i))
 (define (buffered-reader-close o) ((method "java.io.BufferedReader" "close") o))
 (define (print-stream-println o s) ((method "java.io.PrintStream" "println" "java.lang.String") o s))

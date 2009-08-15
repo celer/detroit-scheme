@@ -176,6 +176,10 @@
 (define (tcp:read io) 
   (buffered-reader-readline (tcp:io-get-input io)))
 
+; read len bytes from io
+(define (tcp:read-bytes io len)
+  (buffered-reader-read (tcp:io-get-input io) len))
+
 ; read-lines from io
 (define (tcp:read-lines io)
   (letrec
