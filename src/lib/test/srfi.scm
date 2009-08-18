@@ -1,4 +1,4 @@
-
+; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
 ;; srfi general testing - dependency testing is considered transparent
 
