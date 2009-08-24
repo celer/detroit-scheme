@@ -31,3 +31,19 @@
 (define (symbols->strings symbol-list) (map symbol->string symbol-list))
 (define (strings->symbols string-list) (map string->symbol string-list))
 
+; lambda alternative token
+(define-syntax .\
+  (syntax-rules ()
+                ((_  (args ...) body ...)
+                 (lambda (args ...)
+                   body ...))))
+
+; define short form
+(define-syntax def
+  (syntax-rules ()
+                ((_ (proc args ...) body ...)
+                 (define (proc args ...)
+                   body ...))
+                ((_ proc body ...)
+                 (define proc body ...))))
+
