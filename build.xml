@@ -1,49 +1,32 @@
 <project name="detroit" default="all" basedir=".">
-    <description> build file for detroit scheme </description>
-  <property name="src" location="src"/>
-  <property name="build" location="build"/>
+	<description> build file for detroit scheme </description>
+	<property name="src" location="src"/>
+	<property name="build" location="build"/>
 
-  <target name="init">
-    <tstamp/>
-    <mkdir dir="${build}"/>
-  </target>
+	<target name="init">
+		<tstamp/>
+		<mkdir dir="${build}"/>
+	</target>
 
-  <target name="compile" depends="init" description="compile the source" >
-    <javac srcdir="${src}" destdir="${build}" debug="false"/>
-  </target>
+	<target name="compile" depends="init" description="compile the source" >
+		<javac srcdir="${src}" destdir="${build}" debug="false"/>
+	</target>
 
-  <target name="dist" depends="compile" description="generate the distribution" >
-    <copy todir="${build}/detroit">
-      <fileset dir="${src}" excludes="**/*.java"/>
-    </copy>
-    <jar jarfile="detroit.jar" basedir="${build}" level="9"> 
-      <manifest>
-	<attribute name="Main-Class" value="detroit.Main" />
-      </manifest>
-    </jar>
-  </target>
+	<target name="dist" depends="compile" description="generate the distribution" >
+		<copy todir="${build}/detroit">
+			<fileset dir="${src}" excludes="**/*.java"/>
+		</copy>
+		<jar jarfile="detroit.jar" basedir="${build}" level="9"> 
+			<manifest>
+				<attribute name="Main-Class" value="detroit.Main" />
+			</manifest>
+		</jar>
+	</target>
 
-  <target name="all" depends="dist" description="build everything" />
+	<target name="all" depends="dist" description="build everything" />
 
-  <target name="install" depends="all" description="install" >
-	<mkdir dir="/usr/local/lib/detroit" />
-	<copy todir="/usr/local/lib/detroit">
-	  <fileset dir="." >
-		<include name="*.jar" />
-		<include name="detroit" />
-	  </fileset> 
-	</copy>	
-	<chmod file="/usr/local/lib/detroit/detroit" perm="755" />
-	<symlink link="/usr/local/bin/detroit" resource="/usr/local/lib/detroit/detroit" />
-  </target>
-  
-  <target name="uninstall" description="uninstall" >
-     <symlink action="delete" link="/usr/local/bin/detroit"/>
-     <delete dir="/usr/local/lib/detroit"/>
-  </target>
-
-  <target name="clean" description="clean up" >
-    <delete dir="${build}"/>
-    <delete file="detroit.jar"/>
-  </target>
+	<target name="clean" description="clean up" >
+		<delete dir="${build}"/>
+		<delete file="detroit.jar"/>
+	</target>
 </project>
