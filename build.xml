@@ -23,12 +23,7 @@
     </jar>
   </target>
 
-  <target name="packs" description="generate packages">
-    <jar jarfile="extras.jar" basedir="packs/extras" level="9" />
-    <jar jarfile="irc.jar" basedir="packs/irc" level="9" />
-  </target>
-
-  <target name="all" depends="dist, packs" description="build everything" />
+  <target name="all" depends="dist" description="build everything" />
 
   <target name="install" depends="all" description="install" >
 	<mkdir dir="/usr/local/lib/detroit" />
@@ -50,8 +45,5 @@
   <target name="clean" description="clean up" >
     <delete dir="${build}"/>
     <delete file="detroit.jar"/>
-    <delete file="extras.jar"/>
-    <delete file="irc.jar"/>
-    <delete file="irc.log"/>
   </target>
 </project>
