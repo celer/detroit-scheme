@@ -722,6 +722,11 @@
 
 (define char? (make-type-predicate "java.lang.Character"))
 
+(define char->integer (constructor "java.lang.Integer" "int"))
+
+(define char-upcase (method "java.lang.Character" "toUpperCase" "char"))
+(define char-downcase (method "java.lang.Character" "toLowerCase" "char"))
+
 (define (char=? a b) (= (char->integer a) (char->integer b)))
 (define (char<? a b) (< (char->integer a) (char->integer b)))
 (define (char>? a b) (> (char->integer a) (char->integer b)))
@@ -739,11 +744,6 @@
 (define char-whitespace? (method "java.lang.Character" "isWhitespace" "char"))
 (define char-upper-case? (method "java.lang.Character" "isUpperCase" "char"))
 (define char-lower-case? (method "java.lang.Character" "isLowerCase" "char"))
-
-(define char->integer (constructor "java.lang.Integer" "int"))
-
-(define char-upcase (method "java.lang.Character" "toUpperCase" "char"))
-(define char-downcase (method "java.lang.Character" "toLowerCase" "char"))
 
 (define vector? (make-type-predicate "[Ljava.lang.Object;"))
 
