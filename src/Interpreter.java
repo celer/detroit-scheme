@@ -1374,7 +1374,7 @@ public class Interpreter
 		try {
 			return run(argList);
 		} catch (Exception e) {
-			throw new Exception(String.format("[unbound symbol][%s]",((Pair)form).car));
+			throw new Exception(String.format(";[unbound symbol][%s]",((Pair)form).car));
 		}
 	}
 
