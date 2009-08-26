@@ -2,6 +2,13 @@
 
 ;; Read/Eval/Print Loop
 
+; print java exceptions to repl
+(define (repl:print-error e form)
+  (format #t "[~a]: ~a~%"
+          (exception:get-cause e)
+          form))
+
+; Read Eval Print Loop
 (define (repl prompt)
   (let loop ()
     (if prompt (write-string ";% ") 
@@ -17,9 +24,8 @@
                                             (write value)
                                             (newline))
                                           values))))
-          (lambda (exc)
-            ((method "java.lang.Exception" "printStackTrace") exc) (newline)
-            (format #t "[detroit:error]:[~a]: ~a~%" ((method "java.lang.Exception" "getMessage") exc) form))
+          (lambda (e)
+            (repl:print-error e form))
           #f)
         (loop)))))
 
