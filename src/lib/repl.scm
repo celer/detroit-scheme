@@ -4,9 +4,7 @@
 
 ; print java exceptions to repl
 (define (repl:print-error e form)
-  (format #t "[~a]: ~a~%"
-          (exception:get-cause e)
-          form))
+  (format #t "[error]:~a =>~%  ~a~%" (cadr (string-split (exception:get-cause e) #\:)) form))
 
 ; Read Eval Print Loop
 (define (repl prompt)

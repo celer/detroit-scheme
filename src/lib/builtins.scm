@@ -1336,3 +1336,17 @@
           ((file:exist? jar-file-installed) (load-jar jar-file-installed))
           (else #f))))
 
+; split string at character
+(define (string-split str ch)
+  (let ((len (string-length str)))
+    (letrec
+      ((split
+         (lambda (a b)
+           (cond
+             ((>= b len) (if (= a b) '() (cons (substring str a b) '())))
+             ((char=? ch (string-ref str b)) (if (= a b)
+                                               (split (+ 1 a) (+ 1 b))
+                                               (cons (substring str a b) (split b b))))
+             (else (split a (+ 1 b)))))))
+      (split 0 0))))
+
