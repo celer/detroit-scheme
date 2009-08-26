@@ -1371,12 +1371,10 @@ public class Interpreter
 		ArgList argList = new ArgList();
 		argList.args = ops;
 
-		// XXX: we can do ((Procedure)(argList.next())).name and .mappings.car/cdr etc...
 		try {
 			return run(argList);
 		} catch (Exception e) {
-			//throw new Exception("unbound variable");
-			throw new Exception(String.format("%s : %s%n", ((Pair)form).car, ((Pair)((Pair)form).cdr).car));
+			throw new Exception(String.format("unbound symbol: %s%n",((Pair)form).car));
 		}
 	}
 

@@ -18,10 +18,8 @@
                                             (newline))
                                           values))))
           (lambda (exc)
-              ((method "java.lang.Exception" "printStackTrace") exc)
-              (newline))
-
-            ;(format #t "[detroit:error]: ~a~%" ((method "java.lang.Exception" "toString") exc)))
+            ((method "java.lang.Exception" "printStackTrace") exc) (newline)
+            (format #t "[detroit:error]:[~a]: ~a~%" ((method "java.lang.Exception" "getMessage") exc) form))
           #f)
         (loop)))))
 
