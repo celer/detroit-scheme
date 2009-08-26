@@ -203,7 +203,12 @@ public class Interpreter
 		Pair listBuilder = cons(null, null);
 		Pair lastPair;
 
+		// XXX: we can do ((Procedure)(argList.next())).name and .mappings.car/cdr etc...
+		try {
 		nextProc = ((Procedure)(argList.next()));
+		} catch (Exception e) {
+			throw new Exception("unbound variable");
+		}
 
 		for (;;)
 		{
