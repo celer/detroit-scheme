@@ -203,12 +203,7 @@ public class Interpreter
 		Pair listBuilder = cons(null, null);
 		Pair lastPair;
 
-		// XXX: we can do ((Procedure)(argList.next())).name and .mappings.car/cdr etc...
-		try {
 		nextProc = ((Procedure)(argList.next()));
-		} catch (Exception e) {
-			throw new Exception("unbound variable");
-		}
 
 		for (;;)
 		{
@@ -1376,7 +1371,13 @@ public class Interpreter
 		ArgList argList = new ArgList();
 		argList.args = ops;
 
-		return run(argList);
+		// XXX: we can do ((Procedure)(argList.next())).name and .mappings.car/cdr etc...
+		try {
+			return run(argList);
+		} catch (Exception e) {
+			//throw new Exception("unbound variable");
+			throw new Exception(String.format("%s : %s%n", ((Pair)form).car, ((Pair)((Pair)form).cdr).car));
+		}
 	}
 
 	public final void load(java.io.Reader inp, Environment env)
