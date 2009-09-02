@@ -415,7 +415,7 @@
     value))
 
 (define (ht-unwrap-value value)
-  (if (eq? value ht-null)
+  (if (equal? value ht-null)
     '()
     value))
 
