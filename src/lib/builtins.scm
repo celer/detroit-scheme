@@ -1350,3 +1350,21 @@
              (else (split a (+ 1 b)))))))
       (split 0 0))))
 
+; determine the type of an object
+(define (type? obj)
+  (cond ((string? obj) 'string)
+        ((number? obj) 'number)
+        ((list? obj) 'list)
+        ((pair? obj) 'pair)
+        ((integer? obj) 'integer)
+        ((char? obj) 'char)
+        ((symbol? obj) 'symbol)
+        ((char-array? obj) 'char-array)
+        ((hash-table? obj) 'hash-table)
+        ((boolean? obj) 'boolean)
+        ((vector? obj) 'vector)
+        ((procedure? obj) 'procedure)
+        ((input-port? obj) 'input-port)
+        ((output-port? obj) 'output-port)
+        (else 'unknown)))
+
