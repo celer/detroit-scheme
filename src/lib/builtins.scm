@@ -1138,7 +1138,8 @@
 (define (with-output-to-string f)
   (let ((os (open-output-string))) 
     (write f os)
-    (get-output-string os)))
+    (symbol->string 
+      (get-output-string os))))
 
 (define (make-thread thunk)
   ((constructor "detroit.NativeThread" "detroit.Interpreter" "java.lang.Object") (interpreter) thunk))
