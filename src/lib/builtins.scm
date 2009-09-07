@@ -1322,7 +1322,7 @@
       (load (string-append (symbol->string lib) ".scm")) #t)
     #f))
 
-; include macro
+; use macro
 (define-macro
   (use . libraries)
   (for-each
