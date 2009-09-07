@@ -46,8 +46,21 @@
 		<chmod file="${install}/detroit" perm="755"/>
         </target>
 
+        <target name="library" depends="init">
+                <antcall target="lib">
+                        <param name="param1" value="library"/>
+                </antcall>
+        </target>
+
 	<target name="clean" description="clean up" >
 		<delete dir="${build}"/>
 		<delete file="detroit.jar"/>
+		<antcall target="lib">
+			<param name="param1" value="clean"/>
+		</antcall>
 	</target>
+
+        <target name="lib">
+                <ant dir="lib" target="${param1}"/>
+        </target>
 </project>

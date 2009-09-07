@@ -1,8 +1,6 @@
 <project name="detroit-lib" default="dist" basedir=".">
 	<property name="build" location="lib"/>
 	<property name="top" location="."/>
-	<property name="install" location="/tmp/detroit"/>
-	<property name="detroit.jar" location="../detroit-scheme/detroit.jar"/>
 	<target name="init">
 		<tstamp/>
 		<mkdir dir="${build}"/>
@@ -31,8 +29,6 @@
 		<mkdir dir="${install}/third-party"/>
 		<copy todir="${install}/lib" flatten="true">
 			<fileset dir="${top}">
-				<include name="MIT-LICENSE"/>
-				<include name="README"/>
 				<include name="*/*.jar"/>
 			</fileset>	
 		</copy>
