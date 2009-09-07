@@ -1,0 +1,56 @@
+<project name="detroit-lib" default="dist" basedir=".">
+	<property name="build" location="lib"/>
+	<property name="top" location="."/>
+	<property name="install" location="/tmp/detroit"/>
+	<property name="detroit.jar" location="../detroit-scheme/detroit.jar"/>
+	<target name="init">
+		<tstamp/>
+		<mkdir dir="${build}"/>
+	</target>
+	<target name="library" depends="init">
+		<antcall target="lib">
+			<param name="param1" value="library"/>
+		</antcall>
+	</target>
+	<target name="dist" depends="library" description="generate the distribution" >
+		<copy todir="${build}" flatten="true">
+			<fileset dir="${top}">
+				<include name="*/*.jar"/>
+			</fileset>	
+		</copy>
+	</target>
+	<target name="clean">
+		<delete dir="${build}"/>
+		<antcall target="lib">
+			<param name="param1" value="clean"/>
+		</antcall>
+	</target>
+	<target name="install" depends="dist">
+		<mkdir dir="${install}/lib"/>
+		<mkdir dir="${install}/test"/>
+		<mkdir dir="${install}/third-party"/>
+		<copy todir="${install}/lib" flatten="true">
+			<fileset dir="${top}">
+				<include name="MIT-LICENSE"/>
+				<include name="README"/>
+				<include name="*/*.jar"/>
+			</fileset>	
+		</copy>
+		<copy todir="${install}/test" flatten="true">
+			<fileset dir="${top}">
+				<include name="*/*/*/test-externals/*"/>
+			</fileset>
+		</copy>
+		<copy todir="${install}/third-party" flatten="true">
+			<fileset dir="${top}">
+				<include name="*/third-party/*"/>
+			</fileset>	
+		</copy>
+	</target>
+	<target name="lib">
+		<ant dir="irc" target="${param1}"/>
+		<ant dir="jdbc" target="${param1}"/>
+		<ant dir="http" target="${param1}"/>
+		<ant dir="tooling" target="${param1}"/>
+	</target>
+</project>

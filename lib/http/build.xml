@@ -1,0 +1,23 @@
+<project name="http" default="library" basedir=".">
+	<description>build-native the http library</description>
+	<property name="src" location="http"/>
+	<property name="build-native" location="build-native"/>
+	<target name="init">
+		<tstamp/>
+		<mkdir dir="${build-native}"/>
+	</target>
+	<target name="compile" depends="init" description="compile the source" >
+		<javac classpath="${detroit.jar}" srcdir="${src}" destdir="${build-native}" debug="false"/>
+	</target>
+	<target name="library" depends="compile" description="generate library">
+		<copy todir="${build-native}">
+                        <fileset dir="${src}" excludes="**/*.java"/>
+                </copy>
+		<jar jarfile="http.jar" basedir="${build-native}" level="9" />
+	</target>
+	<target name="clean" description="clean up" >
+		<delete dir="${build-native}"/>
+		<delete file="http.jar"/>
+	</target>
+</project>
+

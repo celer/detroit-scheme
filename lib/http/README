@@ -1,0 +1,4 @@
+about: http library 
+build: ant
+ssl: keytool -genkey -keyalg RSA -keystore my.keystore
+usage: (include http) (use http-server) (use http-client)

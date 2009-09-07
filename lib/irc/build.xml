@@ -1,0 +1,10 @@
+<project name="irc" default="library" basedir=".">
+	<description>build the irc library</description>
+	<target name="library" description="generate library">
+		<jar jarfile="irc.jar" basedir="irc" level="9" />
+	</target>
+	<target name="clean" description="clean up" >
+		<delete file="irc.jar"/>
+	</target>
+</project>
+

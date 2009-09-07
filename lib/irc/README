@@ -1,0 +1,3 @@
+about: irc library 
+build: ant
+usage: (include irc) (use irc)

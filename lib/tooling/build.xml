@@ -1,0 +1,10 @@
+<project name="tooling" default="library" basedir=".">
+	<description>build the tooling library</description>
+	<target name="library" description="generate library">
+		<jar jarfile="tooling.jar" basedir="tooling" level="9" />
+	</target>
+	<target name="clean" description="clean up" >
+		<delete file="tooling.jar"/>
+	</target>
+</project>
+
