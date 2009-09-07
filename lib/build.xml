@@ -1,9 +1,9 @@
 <project name="detroit-lib" default="dist" basedir=".">
-	<property name="build" location="lib"/>
-	<property name="top" location="."/>
+	<property name="build-lib" location="build-lib"/>
+	<property name="top-lib" location="."/>
 	<target name="init">
 		<tstamp/>
-		<mkdir dir="${build}"/>
+		<mkdir dir="${build-lib}"/>
 	</target>
 	<target name="library" depends="init">
 		<antcall target="lib">
@@ -11,14 +11,14 @@
 		</antcall>
 	</target>
 	<target name="dist" depends="library" description="generate the distribution" >
-		<copy todir="${build}" flatten="true">
-			<fileset dir="${top}">
+		<copy todir="${build-lib}" flatten="true">
+			<fileset dir="${top-lib}">
 				<include name="*/*.jar"/>
 			</fileset>	
 		</copy>
 	</target>
 	<target name="clean">
-		<delete dir="${build}"/>
+		<delete dir="${build-lib}"/>
 		<antcall target="lib">
 			<param name="param1" value="clean"/>
 		</antcall>
@@ -28,17 +28,17 @@
 		<mkdir dir="${install}/test"/>
 		<mkdir dir="${install}/third-party"/>
 		<copy todir="${install}/lib" flatten="true">
-			<fileset dir="${top}">
+			<fileset dir="${top-lib}">
 				<include name="*/*.jar"/>
 			</fileset>	
 		</copy>
 		<copy todir="${install}/test" flatten="true">
-			<fileset dir="${top}">
+			<fileset dir="${top-lib}">
 				<include name="*/*/*/test-externals/*"/>
 			</fileset>
 		</copy>
 		<copy todir="${install}/third-party" flatten="true">
-			<fileset dir="${top}">
+			<fileset dir="${top-lib}">
 				<include name="*/third-party/*"/>
 			</fileset>	
 		</copy>

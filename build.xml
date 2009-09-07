@@ -8,6 +8,9 @@
 	<target name="init">
 		<tstamp/>
 		<mkdir dir="${build}"/>
+		<antcall target="lib">
+			<param name="param1" value="init"/>
+		</antcall>
 	</target>
 
 	<target name="compile" depends="init" description="compile the source" >
@@ -23,6 +26,9 @@
 				<attribute name="Main-Class" value="detroit.Main" />
 			</manifest>
 		</jar>
+		<antcall target="lib">
+			<param name="param1" value="dist"/>
+		</antcall>
 	</target>
 
 	<target name="all" depends="dist" description="build everything" />
@@ -44,12 +50,9 @@
                         </fileset>
                 </copy>
 		<chmod file="${install}/detroit" perm="755"/>
-        </target>
-
-        <target name="library" depends="init">
-                <antcall target="lib">
-                        <param name="param1" value="library"/>
-                </antcall>
+		<antcall target="lib">
+			<param name="param1" value="install"/>
+		</antcall>
         </target>
 
 	<target name="clean" description="clean up" >
