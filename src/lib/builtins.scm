@@ -1331,8 +1331,16 @@
     libraries)) 
 
 ; load an srfi by number
-(define (srfi num)
+(define (srfi-by-number num)
   (load (make-require-path (number->string num))) #t)
+
+; srfi macro
+(define-macro
+  (srfi . srfis)
+  (for-each
+    (lambda (s)
+      (srfi-by-number s))
+    srfis)) 
 
 ; load a package by name
 (define (include-file name)

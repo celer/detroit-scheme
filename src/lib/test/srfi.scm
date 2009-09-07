@@ -2,9 +2,7 @@
 
 ;; srfi general testing - dependency testing is considered transparent
 
-(srfi 1)
-(srfi 9)
-(srfi 26)
+(srfi 1 9 26)
 
 ;; let-optionals*
 (define (test:let-optionals*)
