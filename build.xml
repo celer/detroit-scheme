@@ -38,13 +38,9 @@
                 <copy todir="${install}" flatten="true">
                         <fileset dir="${top}">
                                 <include name="detroit.jar"/>
-                        </fileset>
-                </copy>
-                <copy todir="${install}" flatten="true">
-                        <fileset dir="${top}">
                                 <include name="detroit"/>
                         </fileset>
-		</copy>
+                </copy>
 		<chmod file="${install}/detroit" perm="755"/>
         </target>
 
