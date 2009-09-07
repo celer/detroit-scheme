@@ -3,7 +3,7 @@
 	<property name="top" location="."/>
 	<property name="src" location="src"/>
 	<property name="build" location="build"/>
-	<property name="install" location="/tmp/detroit"/>
+	<property name="install" location="detroit-scheme"/>
 
 	<target name="init">
 		<tstamp/>
