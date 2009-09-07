@@ -1332,9 +1332,11 @@
 ; load a package by name
 (define (include name)
   (let* ((jar-file (string-append (symbol->string name) ".jar"))
-         (jar-file-installed (conc "/usr/local/lib/detroit/" jar-file)))
+         (jar-file-installed (conc "lib/" jar-file))
+         (jar-file-third-party (conc "third-party/" jar-file)))
     (cond ((file:exist? jar-file) (load-jar jar-file))
           ((file:exist? jar-file-installed) (load-jar jar-file-installed))
+          ((file:exist? jar-file-third-party) (load-jar jar-file-third-party))
           (else #f))))
 
 ; split string at character
