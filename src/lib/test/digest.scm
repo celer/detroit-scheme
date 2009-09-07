@@ -17,5 +17,3 @@
 
 (test:digest:md5)
 (test:digest:sha-1)
-(check-report)
-

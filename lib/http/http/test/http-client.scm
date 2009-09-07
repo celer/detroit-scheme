@@ -16,6 +16,3 @@
 ; run http client test
 ;(test:http:client "http")
 (test:http:client "https")
-
-; produce a report
-(check-report)

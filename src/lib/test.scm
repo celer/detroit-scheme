@@ -4,7 +4,9 @@
 ; run a unit test 
 (define-macro
   (test:unit . tests)
+  (check-reset!)
   (for-each
     (lambda (test)
       (require (string->symbol (conc "test/" (symbol->string test)))))
-    tests))
+    tests)
+  (check-report))

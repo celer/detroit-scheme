@@ -78,5 +78,3 @@
   (test:jdbc:null))
 
 (test:jdbc)
-(check-report)
-

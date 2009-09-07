@@ -29,4 +29,3 @@
 
 ; test the irc library and produce a report
 (test:irc:connect)
-(check-report)

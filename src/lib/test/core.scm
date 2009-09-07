@@ -7,4 +7,3 @@
  (check (receive (a b) (values 1 2) (list a b)) => '(1 2)))
 
 (test:core)
-(check-report)

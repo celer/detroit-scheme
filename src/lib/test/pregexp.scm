@@ -111,7 +111,3 @@
 (check (length (pregexp-match "(a)|(b)" "b")) => 3)
 (check (pregexp "[-a]") => '(:sub (:or (:seq (:one-of-chars #\- #\a)))))
 (check (pregexp "[a-]") => '(:sub (:or (:seq (:one-of-chars #\a #\-)))))
-
-; produce a report
-(check-report)
-

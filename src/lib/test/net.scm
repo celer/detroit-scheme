@@ -30,5 +30,3 @@
 
 (test:net test:port) 
 (test:net-ssl test:port) 
-(check-report)
-

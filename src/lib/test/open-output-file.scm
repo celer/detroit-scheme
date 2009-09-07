@@ -24,5 +24,3 @@
   (check (read-file (open-input-file test:output-file)) => '("second line" "first line" "second line")))
 
 (test:output-file-contents)
-
-(check-report)

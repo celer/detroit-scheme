@@ -73,7 +73,3 @@
 (test:srfi-9)
 (test:srfi-16)
 (test:srfi-26)
-
-;; produce a report
-(check-report)
-

@@ -8,5 +8,3 @@
 	(check r => 4)))
 
 (test:with-io-strings)
-
-(check-report)
