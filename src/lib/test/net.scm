@@ -2,8 +2,7 @@
 
 ;; lib/net testing
 
-(use 'test)
-(use 'net)
+(use net)
 
 (define test:port 9000)
 

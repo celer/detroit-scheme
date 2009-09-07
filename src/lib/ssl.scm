@@ -2,7 +2,7 @@
 
 ;; SSL library 
 
-(use 'keystore)
+(use keystore)
 
 ; setup a keystore and a truststore to use the same keystore file
 (define (ssl:set! ksts password)

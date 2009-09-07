@@ -2,8 +2,7 @@
 
 ;; Networking API
 
-(use 'tcp)
-(use 'ssl)
+(use tcp ssl)
 
 (define net:print tcp:print)
 (define net:read tcp:read)

@@ -1,7 +1,5 @@
 ; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
-(use 'test)
-
 (define (test:loop message)
   (display (conc "test:loop: " message)) (newline)
   (sleep 1)

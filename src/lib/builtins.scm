@@ -1322,15 +1322,20 @@
       (load (string-append (symbol->string lib) ".scm")) #t)
     #f))
 
-; alias for require
-(define use require)
+; include macro
+(define-macro
+  (use . libraries)
+  (for-each
+    (lambda (lib)
+      (require lib))
+    libraries)) 
 
 ; load an srfi by number
 (define (srfi num)
   (load (make-require-path (number->string num))) #t)
 
 ; load a package by name
-(define (include name)
+(define (include-file name)
   (let* ((jar-file (string-append (symbol->string name) ".jar"))
          (jar-file-installed (conc "lib/" jar-file))
          (jar-file-third-party (conc "third-party/" jar-file)))
@@ -1338,6 +1343,14 @@
           ((file:exist? jar-file-installed) (load-jar jar-file-installed))
           ((file:exist? jar-file-third-party) (load-jar jar-file-third-party))
           (else #f))))
+
+; include macro
+(define-macro
+  (include . packages)
+  (for-each
+    (lambda (p)
+      (include-file p))
+    packages))
 
 ; split string at character
 (define (string-split str ch)

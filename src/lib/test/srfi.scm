@@ -2,8 +2,6 @@
 
 ;; srfi general testing - dependency testing is considered transparent
 
-(use 'test)
-
 (srfi 1)
 (srfi 9)
 (srfi 26)

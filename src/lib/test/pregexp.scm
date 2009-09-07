@@ -2,8 +2,7 @@
 
 ; portable regular expressions library test
 
-(use 'test)
-(use 'pregexp)
+(use pregexp)
 
 (define date-re
   ;match `month year' or `month day, year'.

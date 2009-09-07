@@ -2,8 +2,7 @@
 
 ;; digest testing 
 
-(use 'test)
-(use 'digest)
+(use digest)
 
 ; the digest test message
 (define test:digest:test-message "digest test message")
