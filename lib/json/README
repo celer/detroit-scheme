@@ -1,0 +1,3 @@
+about: json library 
+build: ant
+usage: (include json) (use json)
