@@ -32,5 +32,9 @@
 ; get the length of a json array
 (define json:array-length (method "org.json.JSONArray" "length"))
 
-; XXX: accessors to object
-; json <-> sexp
+; JSONObject type predicate
+(define json:object? (make-type-predicate "org.json.JSONObject"))
+
+; JSONArray type predicate
+(define json:array? (make-type-predicate "org.json.JSONArray"))
+
