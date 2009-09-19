@@ -1,7 +1,8 @@
 ; Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.
 
-(include tooling)
-(use json custom)
+; json test
+
+(use json)
 
 (define (test:json)
   (let ((json-object (json:parse "{\"two\":[\"two\",\"two\"],\"one\":\"one\"}")))
