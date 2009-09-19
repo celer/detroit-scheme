@@ -54,6 +54,7 @@
 (define json:array? (make-type-predicate "org.json.JSONArray"))
 
 ; XXX: json:object:map
-; XXX: json:array:map
+;       XXX: json:array:map
 ; XXX: json->list
 ; XXX: list->json
+
