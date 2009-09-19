@@ -6,7 +6,12 @@
 (define json:parse (constructor "org.json.JSONObject" "java.lang.String"))
 
 ; produce json string from object
-(define json:to_json (method "org.json.JSONObject" "toString"))
+(define (json:to_json input)
+  (let* ((get (method "org.json.JSONObject" "toString"))
+         (result (get input)))
+    (if (symbol? result)
+      (symbol->string result)
+      result)))
 
 ; get the value associated with a key
 (define json:object-ref (method "org.json.JSONObject" "get" "java.lang.String"))
