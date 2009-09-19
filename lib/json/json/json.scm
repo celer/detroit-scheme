@@ -12,7 +12,11 @@
 (define json:object-ref (method "org.json.JSONObject" "get" "java.lang.String"))
 
 ; associate a value with a key
-(define json:object-set! (method "org.json.JSONObject" "put" "java.lang.String" "java.lang.Object"))
+(define (json:object-set! object key value)
+  (let ((put (method "org.json.JSONObject" "put" "java.lang.String" "java.lang.Object")))
+    (if (string? value)
+      (put object key (string->symbol value))
+      (put object key value))))
 
 ; get the object length
 (define json:object-length (method "org.json.JSONObject" "length"))
@@ -24,7 +28,18 @@
 (define json:array-ref (method "org.json.JSONArray" "get" "int"))
 
 ; put an object at the index
-(define json:array-set! (method "org.json.JSONArray" "put" "int" "java.lang.Object"))
+(define (json:array-set! object index value)
+  (let ((put (method "org.json.JSONArray" "put" "int" "java.lang.Object")))
+    (if (string? value)
+      (put object index (string->symbol value))
+      (put object index value))))
+
+; append an object to the array
+(define (json:array-append! object value)
+  (let ((put (method "org.json.JSONArray" "put" "java.lang.Object")))
+    (if (string? value)
+      (put object (string->symbol value))
+      (put object value))))
 
 ; delete an object at the index
 (define json:array-delete! (method "org.json.JSONArray" "remove" "int"))
@@ -38,3 +53,7 @@
 ; JSONArray type predicate
 (define json:array? (make-type-predicate "org.json.JSONArray"))
 
+; XXX: json:object:map
+; XXX: json:array:map
+; XXX: json->list
+; XXX: list->json
