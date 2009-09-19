@@ -78,8 +78,6 @@
 ; JSONArray type predicate
 (define json:array? (make-type-predicate "org.json.JSONArray"))
 
+; XXX: implement in a similar fashion to native hash table map (see gather)
 ; XXX: json:object:map
-;       XXX: json:array:map
-; XXX: json->list
-; XXX: list->json
-
+; XXX: json:array:map
