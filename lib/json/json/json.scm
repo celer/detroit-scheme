@@ -14,7 +14,12 @@
       result)))
 
 ; get the value associated with a key
-(define json:object-ref (method "org.json.JSONObject" "get" "java.lang.String"))
+(define (json:object-ref object key) 
+  (let* ((get (method "org.json.JSONObject" "get" "java.lang.String"))
+         (result (get object key)))
+    (if (symbol? result)
+      (symbol->string result)
+      result)))
 
 ; associate a value with a key
 (define (json:object-set! object key value)
@@ -30,7 +35,12 @@
 (define json:object-delete! (method "org.json.JSONObject" "remove" "java.lang.String"))
 
 ; get an index for an array
-(define json:array-ref (method "org.json.JSONArray" "get" "int"))
+(define (json:array-ref object index)
+  (let* ((get (method "org.json.JSONArray" "get" "int"))
+         (result (get object index)))
+    (if (symbol? result)
+      (symbol->string result)
+      result)))
 
 ; put an object at the index
 (define (json:array-set! object index value)
