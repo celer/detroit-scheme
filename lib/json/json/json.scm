@@ -32,7 +32,12 @@
 (define json:object-length (method "org.json.JSONObject" "length"))
 
 ; delete an object with key
-(define json:object-delete! (method "org.json.JSONObject" "remove" "java.lang.String"))
+(define (json:object-delete! object key)
+  (let* ((remove (method "org.json.JSONObject" "remove" "java.lang.String"))
+         (result (remove object key)))
+    (if (symbol? result)
+      (symbol->string result)
+      result)))
 
 ; get an index for an array
 (define (json:array-ref object index)
@@ -57,7 +62,12 @@
       (put object value))))
 
 ; delete an object at the index
-(define json:array-delete! (method "org.json.JSONArray" "remove" "int"))
+(define (json:array-delete! object index)
+  (let* ((remove (method "org.json.JSONArray" "remove" "int"))
+         (result (remove object index)))
+    (if (symbol? result)
+      (symbol->string result)
+      result)))
 
 ; get the length of a json array
 (define json:array-length (method "org.json.JSONArray" "length"))

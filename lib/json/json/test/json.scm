@@ -17,9 +17,9 @@
     (check (json:to_json json-object) => "{\"two\":[\"hello set!\",\"two\",\"hello append!\"],\"one\":\"one\",\"three\":\"three\"}")
     (check (json:object-length json-object) => 3)
     (check (json:array-length (json:object-ref json-object "two")) => 3)
-    (puts (json:array-delete! (json:object-ref json-object "two") 2))
+    (check (json:array-delete! (json:object-ref json-object "two") 2) => "hello append!")
     (check (json:array-length (json:object-ref json-object "two")) => 2)
-    (puts (json:object-delete! json-object "two"))
+    (check (json:array? (json:object-delete! json-object "two")) => #t)
     (check (json:object-length json-object) => 2)))
 
 (test:json)
