@@ -11,11 +11,14 @@
     (check (json:object-ref json-object "one") => "one")
     (check (json:array? (json:object-ref json-object "two")) => #t)
     (check (json:array-map (lambda (e) e) (json:object-ref json-object "two")) => '("two" "two"))
-    (json:object-map
-      (lambda (k v)
-        (cond ((equal? k "two") (check (json:array? v) => #t))
-              ((equal? k "one") (check v => "one"))))
-      json-object)
+    (check (length 
+             (json:object-map
+               (lambda (k v)
+                 (cond ((equal? k "two") (check (json:array? v) => #t))
+                       ((equal? k "one") (check v => "one")))
+                 (list k v))
+               json-object)) 
+           => 2)
     (json:object-set! json-object "three" "three")
     (check (json:to_json json-object) => "{\"two\":[\"two\",\"two\"],\"one\":\"one\",\"three\":\"three\"}")
 

@@ -105,6 +105,7 @@
             (loop
               (cons
                 (proc key (json:object-ref obj key))
-                acc))))))
+                acc)))
+          acc)))
     #f))
 
