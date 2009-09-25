@@ -78,6 +78,18 @@
 ; JSONArray type predicate
 (define json:array? (make-type-predicate "org.json.JSONArray"))
 
-; XXX: implement in a similar fashion to native hash table map (see gather)
-; XXX: json:object:map
-; XXX: json:array:map
+; map a procedure over a json array
+(define (json:array-map proc array)
+  (if (json:array? array)
+    (let ((len (json:array-length array)))
+      (let loop ((current 0) (acc '()))
+        (if (< current len)
+          (loop
+            (+ 1 current)
+            (cons
+              (proc (json:array-ref array current))
+              acc))
+          acc)))
+    #f))
+
+; XXX: json:object:map -> keys()
