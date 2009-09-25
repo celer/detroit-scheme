@@ -141,9 +141,15 @@
         e))
     arr))
 
+; XXX: from string
 ; convert json to a list
 (define (json->list obj)
   (if (json:array? obj)
     (json:array->list obj)
     (json:object->list obj)))
+
+; XXX: to string
+; convert from list to json
+(define (list->json l)
+  l)
 
