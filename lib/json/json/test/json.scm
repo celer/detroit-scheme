@@ -5,9 +5,11 @@
 (use json)
 
 (define (test:json)
+  ; XXX: need some other values in here besides string
   (let ((json-object (json:parse "{\"two\":[\"one\",\"two\",\"three\"],\"one\":\"one\"}"))
         ; XXX: object inside
         (json-array (json:parse "[\"one\",\"two\",\"three\"]")))
+    (display (json:parse "[\"one\",\"two\":\"two\",\"three\"]")) (newline)
     (check (json:to_json json-object) => "{\"two\":[\"one\",\"two\",\"three\"],\"one\":\"one\"}")
     (check (json:object? json-object) => #t) 
     (check (json:object-ref json-object "one") => "one")
