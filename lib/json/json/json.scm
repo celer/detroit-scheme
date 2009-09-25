@@ -2,8 +2,18 @@
 
 ; json library
 
+; parse json object string
+(define json:parse-object (constructor "org.json.JSONObject" "java.lang.String"))
+(define json:parse-array (constructor "org.json.JSONArray" "java.lang.String"))
+
 ; parse json string
-(define json:parse (constructor "org.json.JSONObject" "java.lang.String"))
+(define (json:parse s)
+  (let ((first (car (string->list s))))
+    (cond ((equal? first #\{)
+           (json:parse-object s))
+          ((equal? first #\[)
+           (json:parse-array s))
+          (else #f))))
 
 ; produce json string from object
 (define (json:to_json input)
@@ -89,7 +99,7 @@
             (cons
               (proc (json:array-ref array current))
               acc))
-          acc)))
+          (reverse acc))))
     #f))
 
 ; map a procedure over a json object
@@ -106,6 +116,34 @@
               (cons
                 (proc key (json:object-ref obj key))
                 acc)))
-          acc)))
+          (reverse acc))))
     #f))
+
+; start with an object and convert to list
+(define (json:object->list obj)
+  (json:object-map
+    (lambda (k v)
+      (if (json:array? v)
+        (cons k 
+              (json:array-map
+                (lambda (e)
+                  e)
+                v))
+        (cons k v)))
+    obj)) 
+
+; start with an array and convert to list
+(define (json:array->list arr)
+  (json:array-map
+    (lambda (e)
+      (if (json:object? e)
+        (json:object->list e)
+        e))
+    arr))
+
+; convert json to a list
+(define (json->list obj)
+  (if (json:array? obj)
+    (json:array->list obj)
+    (json:object->list obj)))
 
