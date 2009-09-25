@@ -101,7 +101,7 @@
            (keys (get-keys obj)))
       (let loop ((acc '()))
         (if (hasNext keys)
-          (let ((key (next keys)))
+          (let ((key (symbol->string (next keys))))
             (loop
               (cons
                 (proc key (json:object-ref obj key))
