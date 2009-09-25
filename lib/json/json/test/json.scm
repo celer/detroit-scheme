@@ -7,6 +7,8 @@
 (define (test:json)
   (let ((json-object (json:parse "{\"two\":[\"one\",\"two\",\"three\"],\"one\":\"one\"}"))
         (json-array (json:parse "[\"one\",{\"two\":2},\"three\"]")))
+    (check (json:object? (json:parse "{\"two\":[\"one\",\"two\",\"three\"],\"one\":\"one\",\"three\":true}")) => #t)
+    (check (json:array? (json:parse "[\"one\",{\"two\":false},\"three\"]")) => #t)
     (check (json:to_json json-object) => "{\"two\":[\"one\",\"two\",\"three\"],\"one\":\"one\"}")
     (check (json:object? json-object) => #t) 
     (check (json:object-ref json-object "one") => "one")
