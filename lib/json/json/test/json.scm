@@ -11,6 +11,10 @@
     (check (json:object-ref json-object "one") => "one")
     (check (json:array? (json:object-ref json-object "two")) => #t)
     (check (json:array-map (lambda (e) e) (json:object-ref json-object "two")) => '("two" "two"))
+    (json:object-map
+      (lambda (k v)
+        (format #t "~A:~A~%" k v))
+      json-object)
     (json:object-set! json-object "three" "three")
     (check (json:to_json json-object) => "{\"two\":[\"two\",\"two\"],\"one\":\"one\",\"three\":\"three\"}")
 

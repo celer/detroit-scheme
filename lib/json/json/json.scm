@@ -92,4 +92,19 @@
           acc)))
     #f))
 
-; XXX: json:object:map -> keys()
+; map a procedure over a json object
+(define (json:object-map proc obj)
+  (if (json:object? obj)
+    (let* ((get-keys (method "org.json.JSONObject" "keys"))
+           (hasNext (method "java.util.Iterator" "hasNext"))
+           (next (method "java.util.Iterator" "next"))
+           (keys (get-keys obj)))
+      (let loop ((acc '()))
+        (if (hasNext keys)
+          (let ((key (next keys)))
+            (loop
+              (cons
+                (proc key (json:object-ref obj key))
+                acc))))))
+    #f))
+
