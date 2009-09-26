@@ -137,7 +137,6 @@
         e))
     arr))
 
-; XXX: from string
 ; convert json to a list
 (define (json->list in) 
   (let ((obj (json:parse in)))
@@ -145,7 +144,8 @@
       (json:array->list obj)
       (json:object->list obj))))
 
-; XXX: to string
 ; convert from list to json
+; XXX: list to json string
 (define (list->json l)
   l)
+
