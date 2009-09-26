@@ -124,13 +124,9 @@
   (json:object-map
     (lambda (k v)
       (if (json:array? v)
-        (cons k 
-              (json:array-map
-                (lambda (e)
-                  e)
-                v))
+        (cons k (json:array->list v))
         (cons k v)))
-    obj)) 
+    obj))
 
 ; start with an array and convert to list
 (define (json:array->list arr)
@@ -152,4 +148,3 @@
 ; convert from list to json
 (define (list->json l)
   l)
-
