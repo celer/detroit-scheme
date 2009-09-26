@@ -5,8 +5,10 @@
 (use json)
 
 (define (test:json)
-  (let ((json-object (json:parse "{\"two\":[\"one\",\"two\",\"three\"],\"one\":\"one\"}"))
-        (json-array (json:parse "[\"one\",{\"two\":2},\"three\"]")))
+  (let* ((json-object-str "{\"two\":[\"one\",\"two\",\"three\"],\"one\":\"one\"}")
+         (json-array-str "[\"one\",{\"two\":2},\"three\"]")
+         (json-object (json:parse json-object-str))
+         (json-array (json:parse json-array-str)))
     (check (json:object? (json:parse "{\"two\":[\"one\",\"two\",\"three\"],\"one\":\"one\",\"three\":true}")) => #t)
     (check (json:array? (json:parse "[\"one\",{\"two\":false},\"three\"]")) => #t)
     (check (json:to_json json-object) => "{\"two\":[\"one\",\"two\",\"three\"],\"one\":\"one\"}")
@@ -23,8 +25,8 @@
                json-object)) 
            => 2)
     ; XXX: fix form
-    (check (json->list json-object) => '(("two" "one" "two" "three") ("one" . "one"))) 
-    (check (json->list json-array) => '("one" (("two" . 2)) "three"))
+    (check (json->list json-object-str) => '(("two" "one" "two" "three") ("one" . "one"))) 
+    (check (json->list json-array-str) => '("one" (("two" . 2)) "three"))
     ; XXX: ->json 
     (json:object-set! json-object "three" "three")
     (check (json:to_json json-object) => "{\"two\":[\"one\",\"two\",\"three\"],\"one\":\"one\",\"three\":\"three\"}") 
