@@ -143,7 +143,7 @@
   (let ((obj (json:parse in)))
     (if (json:array? obj)
       (json:array->list obj)
-        (json:object->list obj))))
+      (json:object->list obj))))
 
 ; convert from list to json
 ; XXX: list to json string
