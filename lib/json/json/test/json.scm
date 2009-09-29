@@ -25,17 +25,14 @@
                json-object)) 
            => 2)
     ;k/v -> '((k v) (k v) (k v)) ; object as a-list, uses assoc
-    ; XXX: this is in reverse!
     (check (json->list "{1:1, 2:2, 3:3}") => '(("1" 1) ("2" 2) ("3" 3))) 
     ;array -> '(1 2 3 4 5 6) ; object as list
-    ; XXX: this is out of order!
     (check (json->list "[1, 2, 3, 4, 5]") => '(1 2 3 4 5))
     ;k/v + array -> '((k (1 2 3)) (k v)) ; k/v with internal array list
-    ; XXX: this is in reverse!
+    ; XXX: for some reason the keys are coming back as being symbols and then converted to strings when they're numbers
     (check (json->list "{1:[1, 2, 3], 2:2}") => '(("1" (1 2 3)) ("2" 2))) 
     ;array + k/v -> '(1 2 3 ((k v) (k v)) 4 5 6) ; array with internal objects
-    ; XXX: this is in order!
-    (check (json->list "[1, 2, 3, { 1:1, 2:2 }]") => '(1 2 3 (("2" 2) ("1" 1)))) 
+    (check (json->list "[1, 2, 3, { 1:1, 2:2 }]") => '(1 2 3 (("1" 1) ("2" 2))))
     ; XXX: ->json 
     (json:object-set! json-object "three" "three")
     (check (json:to_json json-object) => "{\"two\":[\"one\",\"two\",\"three\"],\"one\":\"one\",\"three\":\"three\"}") 
