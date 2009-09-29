@@ -114,7 +114,7 @@
           (let ((key (symbol->string (next keys))))
             (loop
               (cons
-                (proc key (json:object-ref obj key))
+                (proc (with-input-from-string key) (json:object-ref obj key))
                 acc)))
           (reverse acc))))
     #f))
