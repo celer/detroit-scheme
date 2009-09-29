@@ -123,16 +123,16 @@
 
 ; map entire object
 (define (json:map proc obj)
-  (if (json:object? obj)
+  (if (json:array? obj)
+    (json:array-map
+      (lambda (e)
+        (if (json:object? e)
+          (json:map proc e)
+          (proc e)))
+      obj)
     (json:object-map
       (lambda (k v)
         (if (json:array? v)
           (json:map proc v)
           (proc v)))
-      obj)
-    (json:array-map
-      (lambda (v)
-        (if (json:object? v)
-          (json:map proc v)
-          (proc v))))))
-
+      obj)))

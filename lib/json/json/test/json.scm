@@ -14,6 +14,7 @@
     (check (json:object? json-object) => #t) 
     (check (json:object-ref json-object "one") => "one")
     (check (json:array? (json:object-ref json-object "two")) => #t)
+    (check (json:map (lambda (e) e) json-object) => '())
     (check (json:array-map (lambda (e) e) (json:object-ref json-object "two")) => '("one" "two" "three"))
     (check (length 
              (json:object-map
@@ -33,7 +34,6 @@
     (check (json:array-delete! (json:object-ref json-object "two") 3) => "hello append!")
     (check (json:array-length (json:object-ref json-object "two")) => 3)
     (check (json:array? (json:object-delete! json-object "two")) => #t)
-    (check (json:object-length json-object) => 2)
-    (check (json:map (lambda (e) e) json-object) => '())))
+    (check (json:object-length json-object) => 2)))
 
 (test:json)
