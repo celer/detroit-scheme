@@ -7,7 +7,7 @@
 (define json:parse-array (constructor "org.json.JSONArray" "java.lang.String"))
 
 ; parse json string
-(define (json:parse s)
+(define (string->json s)
   (let ((first (car (string->list s))))
     (cond ((equal? first #\{)
            (json:parse-object s))
@@ -16,7 +16,7 @@
           (else #f))))
 
 ; produce json string from object
-(define (json:to_json input)
+(define (json->string input)
   (let* ((get (method "org.json.JSONObject" "toString"))
          (result (get input)))
     (if (symbol? result)
@@ -121,33 +121,18 @@
           (reverse acc))))
     #f))
 
-; start with an object and convert to list
-(define (json:object->list obj)
-  (reverse 
+; map entire object
+(define (json:map proc obj)
+  (if (json:object? obj)
     (json:object-map
       (lambda (k v)
         (if (json:array? v)
-          (list k (json:array->list v))
-          (list k v)))
-      obj)))
+          (json:map proc v)
+          (proc v)))
+      obj)
+    (json:array-map
+      (lambda (v)
+        (if (json:object? v)
+          (json:map proc v)
+          (proc v))))))
 
-; start with an array and convert to list
-(define (json:array->list arr)
-  (json:array-map
-    (lambda (e)
-      (if (json:object? e)
-        (json:object->list e)
-        e))
-    arr))
-
-; convert json to a list
-(define (json->list in) 
-  (let ((obj (json:parse in)))
-    (if (json:array? obj)
-      (json:array->list obj)
-      (json:object->list obj))))
-
-; convert from list to json
-; XXX: list to json string
-(define (list->json l)
-  l)
