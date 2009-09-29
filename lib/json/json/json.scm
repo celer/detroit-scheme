@@ -124,8 +124,8 @@
   (json:object-map
     (lambda (k v)
       (if (json:array? v)
-        (cons k (json:array->list v))
-        (cons k v)))
+        (list k (json:array->list v))
+        (list k v)))
     obj))
 
 ; start with an array and convert to list
@@ -142,10 +142,10 @@
   (let ((obj (json:parse in)))
     (if (json:array? obj)
       (json:array->list obj)
-      (json:object->list obj))))
+      (reverse 
+        (json:object->list obj)))))
 
 ; convert from list to json
 ; XXX: list to json string
 (define (list->json l)
   l)
-
