@@ -47,6 +47,7 @@
 		<ant dir="irc" target="${param1}"/>
 		<ant dir="jdbc" target="${param1}"/>
 		<ant dir="http" target="${param1}"/>
+		<ant dir="json" target="${param1}"/>
 		<ant dir="tooling" target="${param1}"/>
 	</target>
 </project>

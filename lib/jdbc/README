@@ -1,3 +1,4 @@
 about: jdbc 
 build: ant
 usage: (include jdbc) (use jdbc)
+drivers: copy driver jars into third-party directory
