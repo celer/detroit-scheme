@@ -47,7 +47,8 @@ public class NativeHttpHandler implements HttpHandler {
 		is.close();
 
 		if (buf.length() > 0) {
-			request = URLDecoder.decode(buf.toString(), "UTF-8");
+			//request = URLDecoder.decode(buf.toString(), "UTF-8");
+			request = buf.toString();
 		} else {
 			request = ""; 
 		}
