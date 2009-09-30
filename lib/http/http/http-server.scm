@@ -63,7 +63,13 @@
             http:server:dispatcher
             (if http:server:ssl (car http:server:ssl) "")
             (if http:server:ssl (cadr http:server:ssl) ""))))
-    ((method "com.sun.net.httpserver.HttpServer" "start") server)))
+    ((method "com.sun.net.httpserver.HttpServer" "start") server)
+    server))
+
+; stop http server
+(define (http:server:stop server)
+  ((method "com.sun.net.httpserver.HttpServer" "stop" "int") server 0)
+  #t)
 
 ; get
 (define-syntax get
