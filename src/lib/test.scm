@@ -3,7 +3,7 @@
 
 ; run a unit test 
 (define-macro
-  (test:unit . tests)
+  (test . tests)
   (check-reset!)
   (for-each
     (lambda (test)
