@@ -68,7 +68,9 @@
 
 ; stop http server
 (define (http:server:stop server)
-  ((method "com.sun.net.httpserver.HttpServer" "stop" "int") server 0)
+  ((method "com.sun.net.httpserver.HttpServer" "stop" "int") server 1)
+  ((method "java.util.concurrent.ExecutorService" "shutdown")
+   ((method "com.sun.net.httpserver.HttpServer" "getExecutor") server))
   #t)
 
 ; get
