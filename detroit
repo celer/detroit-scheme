@@ -7,24 +7,16 @@ if [ -f detroit.jar ]
 then
 	if [ -x /usr/bin/rlwrap ] 
 	then
-		rlwrap -f $DT_HISTFILE -H $DT_HISTFILE -n -c -r java -jar detroit.jar $@ 
+		rlwrap -f $DT_HISTFILE -H $DT_HISTFILE -n -c -r java -jar detroit.jar "$@"
 	else
-		java -jar detroit.jar $@
-	fi
-elif [ -f /usr/local/lib/detroit/detroit.jar ]
-then
-	if [ -x /usr/bin/rlwrap ]
-	then
-		rlwrap -f $DT_HISTFILE -H $DT_HISTFILE -n -c -r java -jar /usr/local/lib/detroit/detroit.jar $@ 
-	else
-		java -jar /usr/local/lib/detroit/detroit.jar $@
+		java -jar detroit.jar "$@"
 	fi
 else
 	echo "Attempting to build..."
 	ant
 	if [ -f detroit.jar ]
 	then
-		./detroit $@
+		./detroit "$@"
 	else
 		echo "Failed to build: You must have a working JDK and Ant installed!"
 	fi

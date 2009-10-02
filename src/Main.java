@@ -10,6 +10,7 @@ public class Main
 	private static String banner = "Detroit Scheme";
 	private static String version = "v1.2.1";
 	private static String author = "Copyright (c) 2009, Raymond R. Medeiros. All rights reserved.";
+	private static String usage = "usage: ./detroit [--help|-h] [-e eval-form] [file.scm] [-]";
 
 	public static void main(String[] args) throws Exception
 	{
@@ -29,6 +30,13 @@ public class Main
 
 			if (args.length == 1) 
 			{
+				if (args[0].equals("-h") || args[0].equals("--help"))
+				{
+					System.out.println(banner + " " + version + "\n" + author);
+					System.out.println(usage + "\n");
+					return;
+				}
+
 				if (args[0].equals("-"))
 				{
 					vm.eval(new Pair("repl", new Pair(false, null)), vm.r5rs);
