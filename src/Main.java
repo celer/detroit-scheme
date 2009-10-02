@@ -47,26 +47,10 @@ public class Main
 			for (i=0; i<args.length; ++i)
 			{
 				if (args[i].equals("-e"))
-					++i;
-				else if (args[i].equals("--"))
-				{
-					Pair arglist = null;
-					for (j=args.length -1; j>i; --j)
-						arglist = new Pair(args[j].toCharArray(), arglist);
-					vm.eval(new Pair("set!", new Pair("argv", new Pair(new Pair("quote", new Pair(arglist, null)), null))),
-							detroit);
-				}
-			}
-
-			for (i=0; i<args.length; ++i)
-			{
-				if (args[i].equals("-e"))
 				{
 					vm.load(new java.io.StringReader(args[++i]),
 							(Environment)vm.eval(new Pair("current-environment", null), vm.r5rs));
 				}
-				else if (args[i].equals("--"))
-					break;
 				else vm.load(new java.io.FileReader(args[i]), vm.r5rs);
 			}
 		}
