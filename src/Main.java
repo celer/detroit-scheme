@@ -17,10 +17,9 @@ public class Main
 		try
 		{
 			Interpreter vm = new Interpreter();
-			int i, j;
-
 			Environment detroit = vm.getEnv("detroit");
 
+			// start a repl
 			if (args.length == 0)
 			{
 				System.out.println(banner + " " + version + "\n" + author);
@@ -28,31 +27,30 @@ public class Main
 				return;
 			}
 
-			if (args.length == 1) 
+			// display usage
+			if (args[0].equals("-h") || args[0].equals("--help"))
 			{
-				if (args[0].equals("-h") || args[0].equals("--help"))
-				{
-					System.out.println(banner + " " + version + "\n" + author);
-					System.out.println(usage + "\n");
-					return;
-				}
-
-				if (args[0].equals("-"))
-				{
-					vm.eval(new Pair("repl", new Pair(false, null)), vm.r5rs);
-					return;
-				}
+				System.out.println(banner + " " + version + "\n" + author);
+				System.out.println(usage);
+				return;
 			}
 
-			for (i=0; i<args.length; ++i)
+			// evaluate a form
+			if (args[0].equals("-e"))
 			{
-				if (args[i].equals("-e"))
-				{
-					vm.load(new java.io.StringReader(args[++i]),
-							(Environment)vm.eval(new Pair("current-environment", null), vm.r5rs));
-				}
-				else vm.load(new java.io.FileReader(args[i]), vm.r5rs);
+				vm.load(new java.io.StringReader(args[1]), (Environment)vm.eval(new Pair("current-environment", null), vm.r5rs));
+				return;
 			}
+
+			// evaluate from standard input 
+			if (args[0].equals("-"))
+			{
+				vm.eval(new Pair("repl", new Pair(false, null)), vm.r5rs);
+				return;
+			}
+
+			// evaluate from a file
+			vm.load(new java.io.FileReader(args[0]), vm.r5rs);
 		}
 		catch (Exception e)
 		{
