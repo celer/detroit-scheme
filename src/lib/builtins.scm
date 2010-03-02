@@ -1115,7 +1115,9 @@
       (flush-output
         (if (pair? opt-output-port)
           (car opt-output-port)
-          (current-output-port))))))
+          (current-output-port)))
+  form
+)))
 
 (define new-string-reader (constructor "java.io.StringReader"
                                        "java.lang.String"))

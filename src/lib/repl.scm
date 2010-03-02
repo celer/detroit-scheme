@@ -2,9 +2,18 @@
 
 ;; Read/Eval/Print Loop
 
+; set the global error to a nil value
+(define repl:error #f) 
+
+; print the last exception as a stack trace
+(define (repl:last-error)
+ (if repl:error
+  (exception:print-stacktrace repl:error))
+ repl:error)
+
 ; print java exceptions to repl
 (define (repl:print-error e form)
-  (format #t "[error]:~a =>~%  ~a~%" (cadr (string-split (exception:get-cause e) #\;)) form))
+ (format #t "[repl:error]:~a =>~%  ~a~%for details: (repl:last-error)~%" (cadr (string-split (exception:get-cause e) #\;)) form))
 
 ; Read Eval Print Loop
 (define (repl prompt)
@@ -23,6 +32,8 @@
                                             (newline))
                                           values))))
           (lambda (e)
+    	    ; set global error
+	    (set! repl:error e)
             (repl:print-error e form))
           #f)
         (loop)))))

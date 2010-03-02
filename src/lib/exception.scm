@@ -7,6 +7,10 @@
   (symbol->string
     ((method "java.lang.Exception" "getMessage") e)))
 
+; print the stack trace
+(define (exception:print-stacktrace e)
+    ((method "java.lang.Exception" "printStackTrace") e))
+
 ; get the cause as a list 
 (define (exception:get-cause e)
   (symbol->string
